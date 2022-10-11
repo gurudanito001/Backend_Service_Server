@@ -1,0 +1,157 @@
+### CLUSTERS
+### Fetch all clusters
+GET http://localhost:8000/clusters
+### Create a new cluster
+POST http://localhost:8000/clusters/create
+content-type: application/json
+
+{
+  "name": "Daniel Nwokocha",
+  "email": "email1@gmail.com",
+  "password": "Programmer95",
+  "description": "Just another Cluster",
+  "multi_tenant": false
+}
+
+### View the details of the just created cluster. Pass same cluster_id
+GET http://localhost:8000/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
+
+### Update the details of the just created cluster. Pass same cluster_id
+PUT  http://localhost:8000/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
+content-type: application/json
+
+{
+    "name": "Daniel Ndubuisi",
+    "email": "resilientprogrammer@gmail.com",
+    "password": "Programmer95",
+    "description": "Just another updated Cluster",
+    "multi_tenant": false
+}
+
+
+### Deactivate the just created cluster. Pass same cluster_id
+PATCH  http://localhost:8000/clusters/freeze/32c7257e-5db5-4647-a788-15840c056149
+
+
+### Reactivate the just created cluster. Pass same cluster_id
+PATCH  http://localhost:8000/clusters/unfreeze/32c7257e-5db5-4647-a788-15840c056149
+
+
+### Delete the just created cluster. Pass same cluster_id
+DELETE  http://localhost:8000/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
+
+
+
+### COLLECTIONS
+### Fetch all collections
+GET http://localhost:8000/collections
+
+### Create a new collection
+POST http://localhost:8000/collections/create
+content-type: application/json
+
+{
+    "cluster_id": "3110f322-53d2-4d29-88f2-d56c67b9fd28",
+    "name": "collection6"
+}
+
+### View the details of the just created collection. Pass same collection_id
+GET http://localhost:8000/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
+
+### Update the details of the just created collection. Pass same collection_id
+PUT  http://localhost:8000/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
+content-type: application/json
+
+{
+    "name": "updated collection6"
+}
+
+### Delete the just created collection. Pass same collection_id
+DELETE  http://localhost:8000/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
+
+
+
+
+### USERS
+### Fetch all users
+GET http://localhost:8000/users
+
+### ### Create a new user
+POST http://localhost:8000/users/create
+content-type: application/json
+
+{
+  "cluster_id": "3110f322-53d2-4d29-88f2-d56c67b9fd28",
+  "data": {
+    "key1": "value1",
+    "key2": "value2",
+    "key3": "value3",
+    "key4": "value4",
+    "key5": "value5"
+  }
+}
+
+### View the details of the just created User. Pass same user_id
+GET http://localhost:8000/users/17fb37bf-4956-4294-8c96-4192f16be10c
+
+### Update the details of the just created user. Pass same user_id
+PUT  http://localhost:8000/users/17fb37bf-4956-4294-8c96-4192f16be10c
+content-type: application/json
+
+{
+  "data": {
+    "updatedkey1": "updatedvalue1",
+    "updatedkey2": "updatedvalue2",
+    "updatedkey3": "updatedvalue3",
+    "updatedkey4": "updatedvalue4",
+    "updatedkey5": "updatedvalue5"
+  }
+}
+
+### Delete the just created user. Pass same user_id
+DELETE  http://localhost:8000/users/17fb37bf-4956-4294-8c96-4192f16be10c
+
+
+
+### DOCUMENTS
+### Fetch all documents
+GET http://localhost:8000/documents
+
+### Create a new document
+POST http://localhost:8000/documents/create
+content-type: application/json
+
+{
+  "cluster_id": "3110f322-53d2-4d29-88f2-d56c67b9fd28",
+  "user_id": null,
+  "collection_id": "b2bebcdb-8eb5-4701-8a4e-8e2bd175e7ae",
+  "collection_name": "collection11",
+  "data": {
+    "key1": "value1",
+    "key2": "value2",
+    "key3": "value3",
+    "key4": "value4",
+    "key5": "value5"
+  }
+}
+
+### View the details of the just created document. Pass same document_id
+GET http://localhost:8000/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
+
+### Update the details of the just created document. Pass same document_id
+PUT  http://localhost:8000/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
+content-type: application/json
+
+{
+  "data": {
+    "updatedkey1": "updatedvalue1",
+    "updatedkey2": "updatedvalue2",
+    "updatedkey3": "updatedvalue3",
+    "updatedkey4": "updatedvalue4",
+    "updatedkey5": "updatedvalue5"
+  }
+}
+
+### Delete the just created document. Pass same document_id
+DELETE  http://localhost:8000/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
+
