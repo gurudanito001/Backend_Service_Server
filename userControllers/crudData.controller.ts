@@ -7,7 +7,7 @@ export const postData = (req: Request, res: Response) => {
 
   const { apiKey, collectionName } = req.params;
   const data  = req.body;
-  let postDataParams = {apiKey, collection_name: collectionName, data, env: config.env}
+  let postDataParams = {apiKey, collection_name: collectionName, data, env: config.ENVIRONMENT}
   let errors = [];
   if(Array.isArray(data)){
     errors.push("Data must be an object");

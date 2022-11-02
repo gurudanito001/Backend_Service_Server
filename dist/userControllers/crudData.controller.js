@@ -9,7 +9,7 @@ const config_1 = __importDefault(require("../config"));
 const postData = (req, res) => {
     const { apiKey, collectionName } = req.params;
     const data = req.body;
-    let postDataParams = { apiKey, collection_name: collectionName, data, env: config_1.default.env };
+    let postDataParams = { apiKey, collection_name: collectionName, data, env: config_1.default.ENVIRONMENT };
     let errors = [];
     if (Array.isArray(data)) {
         errors.push("Data must be an object");

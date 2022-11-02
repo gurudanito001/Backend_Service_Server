@@ -1,11 +1,12 @@
+import config from './config'
 const Pool = require('pg').Pool
 
 const pool = new Pool({
-  user: 'daniel',
-  host: 'localhost',
-  database: 'backend_service',
-  password: 'fsWxKmrDfufmqESvC3TH',
-  port: 5432
+  user: config.DB_USER,
+  host: config.DB_HOST,
+  database: config.DATABASE,
+  password: config.PASSWORD,
+  port: config.DB_PORT
 })
 
 export default pool;
