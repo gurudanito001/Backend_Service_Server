@@ -8,42 +8,50 @@ datasource db {
 }
 
 model clusters {
-  cluster_id   String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name         String        @db.VarChar
-  email        String        @unique @db.VarChar 
-  password     String        @db.VarChar
-  description  String        @db.VarChar
-  multi_tenant Boolean       @default(true)
-  isactive     Boolean?      @default(true)
-  collections  collections[]
-  documents    documents[]
-  users        users[]
+  cluster_id      String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name            String        @db.VarChar
+  email           String        @unique @db.VarChar 
+  password        String        @db.VarChar
+  description     String        @db.VarChar
+  multi_tenant    Boolean       @default(true)
+  isactive        Boolean?      @default(true)
+  collections     collections[]
+  documents       documents[]
+  users           users[]
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 }
 
 model collections {
-  collection_id String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  cluster_id    String?     @db.Uuid
-  name          String      @db.VarChar
-  clusters      clusters?   @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
-  documents     documents[]
+  collection_id   String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  cluster_id      String?       @db.Uuid
+  name            String        @db.VarChar
+  clusters        clusters?     @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
+  documents       documents[]
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 }
 
 model documents {
-  document_id     String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id         String?      @db.Uuid
-  collection_id   String?      @db.Uuid
-  cluster_id      String?      @db.Uuid
-  data            Json         @default("{}")
-  collection_name String?      @db.VarChar
-  clusters        clusters?    @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
-  collections     collections? @relation(fields: [collection_id], references: [collection_id], onDelete: NoAction, onUpdate: NoAction)
-  users           users?       @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  document_id     String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id         String?       @db.Uuid
+  collection_id   String?       @db.Uuid
+  cluster_id      String?       @db.Uuid
+  data            Json          @default("{}")
+  collection_name String?       @db.VarChar
+  clusters        clusters?     @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
+  collections     collections?  @relation(fields: [collection_id], references: [collection_id], onDelete: NoAction, onUpdate: NoAction)
+  users           users?        @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 }
 
 model users {
-  user_id    String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  cluster_id String?     @db.Uuid
-  data       Json        @default("{}")
-  clusters   clusters?   @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
-  documents  documents[]
+  user_id         String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  cluster_id      String?       @db.Uuid
+  data            Json          @default("{}")
+  clusters        clusters?     @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
+  documents       documents[]
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
 }

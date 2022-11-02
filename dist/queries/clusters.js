@@ -13,13 +13,6 @@ const getClusters = (request, response) => {
         }
         response.status(201).json(results.rows);
     });
-    /* getAllClusters()
-    .then(results =>{
-      response.status(200).json(results)
-    })
-    .catch(error =>{
-      response.status(400).send(error.response)
-    }); */
 };
 const getClusterById = (request, response) => {
     const clusterId = request.params.id;
@@ -29,21 +22,6 @@ const getClusterById = (request, response) => {
         }
         response.status(201).json(results.rows[0]);
     });
-    /* getOneClusterById(clusterId)
-    .then(results =>{
-      response.status(200).json(results)
-    })
-    .catch(error =>{
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        // The .code property can be accessed in a type-safe manner
-        if (error.code === 'P2002') {
-          console.log(
-            'There is a unique constraint violation, a new user cannot be created with this email'
-          )
-        }
-      }
-      response.status(400).json(error.response)
-    }); */
 };
 const createCluster = (request, response) => {
     const { name, email, password, description, multi_tenant } = request.body;
@@ -51,21 +29,8 @@ const createCluster = (request, response) => {
         if (error) {
             return response.status(400).json(error.message);
         }
-        return results.rows[0];
+        response.status(201).json(results.rows[0]);
     });
-    /* createOneCluster({ name, email, password, description, multi_tenant })
-    .then(results => {
-      response.status(201).json(results)
-    })
-    .catch(error => {
-      response.status(400).json(error)
-    });  */
-    /* pool.query('INSERT INTO clusters (name, email, password, description, multi_tenant) VALUES ($1, $2, $3, $4, $5) RETURNING cluster_id', [name, email, password, description, multi_tenant], (error: any, results: any) => {
-      if (error) {
-        throw error
-      }
-      response.status(201).send(results.rows[0])
-    }) */
 };
 const updateCluster = (request, response) => {
     const id = request.params.id;
