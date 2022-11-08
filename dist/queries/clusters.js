@@ -25,7 +25,8 @@ const getClusterById = (request, response) => {
 };
 const createCluster = (request, response) => {
     const { name, email, password, description, multi_tenant } = request.body;
-    dbConnection_1.default.query('INSERT INTO clusters (name, email, password, description, multi_tenant) VALUES ($1, $2, $3, $4, $5) RETURNING cluster_id', [name, email, password, description, multi_tenant], (error, results) => {
+    const date = Date.now().toString();
+    dbConnection_1.default.query('INSERT INTO clusters (name, email, password, description, multi_tenant, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [name, email, password, description, multi_tenant, date, date], (error, results) => {
         if (error) {
             return response.status(400).json(error.message);
         }
@@ -35,7 +36,8 @@ const createCluster = (request, response) => {
 const updateCluster = (request, response) => {
     const id = request.params.id;
     const { name, email, password, description, multi_tenant } = request.body;
-    dbConnection_1.default.query('UPDATE clusters SET name = $1, email = $2, password = $3, description = $4, multi_tenant = $5 WHERE cluster_id = $6 RETURNING cluster_id, name, email, password, description, multi_tenant', [name, email, password, description, multi_tenant, id], (error, results) => {
+    const updated_at = Date.now().toString();
+    dbConnection_1.default.query('UPDATE clusters SET name = $1, email = $2, password = $3, description = $4, multi_tenant = $5, updated_at = $6 WHERE cluster_id = $7 RETURNING *', [name, email, password, description, multi_tenant, updated_at, id], (error, results) => {
         if (error) {
             return response.status(400).json(error.message);
         }

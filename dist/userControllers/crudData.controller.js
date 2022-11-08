@@ -4,12 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOneData = exports.updateOneData = exports.readOneData = exports.readAllData = exports.postData = void 0;
-const crudData_query_1 = __importDefault(require("../queries/userQueries/crudData.query"));
-const config_1 = __importDefault(require("../config"));
+const crudData_query_1 = __importDefault(require("../controllers/userControllers/crudData.query"));
 const postData = (req, res) => {
     const { apiKey, collectionName } = req.params;
     const data = req.body;
-    let postDataParams = { apiKey, collection_name: collectionName, data, env: config_1.default.ENVIRONMENT };
+    let postDataParams = { apiKey, collection_name: collectionName, data };
     let errors = [];
     if (Array.isArray(data)) {
         errors.push("Data must be an object");

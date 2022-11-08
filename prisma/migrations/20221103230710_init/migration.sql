@@ -7,6 +7,8 @@ CREATE TABLE "clusters" (
     "description" VARCHAR NOT NULL,
     "multi_tenant" BOOLEAN NOT NULL DEFAULT true,
     "isactive" BOOLEAN DEFAULT true,
+    "created_at" TEXT NOT NULL DEFAULT '',
+    "updated_at" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "clusters_pkey" PRIMARY KEY ("cluster_id")
 );
@@ -16,6 +18,8 @@ CREATE TABLE "collections" (
     "collection_id" UUID NOT NULL DEFAULT uuid_generate_v4(),
     "cluster_id" UUID,
     "name" VARCHAR NOT NULL,
+    "created_at" TEXT NOT NULL DEFAULT '',
+    "updated_at" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "collections_pkey" PRIMARY KEY ("collection_id")
 );
@@ -28,6 +32,8 @@ CREATE TABLE "documents" (
     "cluster_id" UUID,
     "data" JSONB NOT NULL DEFAULT '{}',
     "collection_name" VARCHAR,
+    "created_at" TEXT NOT NULL DEFAULT '',
+    "updated_at" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "documents_pkey" PRIMARY KEY ("document_id")
 );
@@ -37,6 +43,8 @@ CREATE TABLE "users" (
     "user_id" UUID NOT NULL DEFAULT uuid_generate_v4(),
     "cluster_id" UUID,
     "data" JSONB NOT NULL DEFAULT '{}',
+    "created_at" TEXT NOT NULL DEFAULT '',
+    "updated_at" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("user_id")
 );

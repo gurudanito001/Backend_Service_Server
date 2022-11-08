@@ -18,8 +18,8 @@ model clusters {
   collections     collections[]
   documents       documents[]
   users           users[]
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
+  created_at      String        @default("")
+  updated_at      String        @default("")
 }
 
 model collections {
@@ -28,8 +28,8 @@ model collections {
   name            String        @db.VarChar
   clusters        clusters?     @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
   documents       documents[]
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
+  created_at      String        @default("")
+  updated_at      String        @default("")
 }
 
 model documents {
@@ -37,13 +37,13 @@ model documents {
   user_id         String?       @db.Uuid
   collection_id   String?       @db.Uuid
   cluster_id      String?       @db.Uuid
-  data            Json          @default("{}")
   collection_name String?       @db.VarChar
+  data            Json          @default("{}")
   clusters        clusters?     @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
   collections     collections?  @relation(fields: [collection_id], references: [collection_id], onDelete: NoAction, onUpdate: NoAction)
   users           users?        @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
+  created_at      String        @default("")
+  updated_at      String        @default("")
 }
 
 model users {
@@ -52,6 +52,6 @@ model users {
   data            Json          @default("{}")
   clusters        clusters?     @relation(fields: [cluster_id], references: [cluster_id], onDelete: NoAction, onUpdate: NoAction)
   documents       documents[]
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
+  created_at      String        @default("")
+  updated_at      String        @default("")
 }

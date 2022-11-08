@@ -1,8 +1,8 @@
 ### CLUSTERS
 ### Fetch all clusters
-GET http://localhost:8000/clusters
+GET http://localhost:8080/clusters
 ### Create a new cluster
-POST http://localhost:8000/clusters/create
+POST http://localhost:8080/clusters/create
 content-type: application/json
 
 {
@@ -14,10 +14,10 @@ content-type: application/json
 }
 
 ### View the details of the just created cluster. Pass same cluster_id
-GET http://localhost:8000/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
+GET http://localhost:8080/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
 
 ### Update the details of the just created cluster. Pass same cluster_id
-PUT  http://localhost:8000/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
+PUT  http://localhost:8080/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
 content-type: application/json
 
 {
@@ -30,24 +30,24 @@ content-type: application/json
 
 
 ### Deactivate the just created cluster. Pass same cluster_id
-PATCH  http://localhost:8000/clusters/freeze/32c7257e-5db5-4647-a788-15840c056149
+PATCH  http://localhost:8080/clusters/freeze/32c7257e-5db5-4647-a788-15840c056149
 
 
 ### Reactivate the just created cluster. Pass same cluster_id
-PATCH  http://localhost:8000/clusters/unfreeze/32c7257e-5db5-4647-a788-15840c056149
+PATCH  http://localhost:8080/clusters/unfreeze/32c7257e-5db5-4647-a788-15840c056149
 
 
 ### Delete the just created cluster. Pass same cluster_id
-DELETE  http://localhost:8000/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
+DELETE  http://localhost:8080/clusters/a947a92e-3112-4a94-8854-0fab0212e04c
 
 
 
 ### COLLECTIONS
 ### Fetch all collections
-GET http://localhost:8000/collections
+GET http://localhost:8080/collections
 
 ### Create a new collection
-POST http://localhost:8000/collections/create
+POST http://localhost:8080/collections/create
 content-type: application/json
 
 {
@@ -56,10 +56,10 @@ content-type: application/json
 }
 
 ### View the details of the just created collection. Pass same collection_id
-GET http://localhost:8000/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
+GET http://localhost:8080/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
 
 ### Update the details of the just created collection. Pass same collection_id
-PUT  http://localhost:8000/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
+PUT  http://localhost:8080/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
 content-type: application/json
 
 {
@@ -67,17 +67,17 @@ content-type: application/json
 }
 
 ### Delete the just created collection. Pass same collection_id
-DELETE  http://localhost:8000/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
+DELETE  http://localhost:8080/collections/4281ff13-6ba0-4713-ac06-3d92d0c93e5f
 
 
 
 
 ### USERS
 ### Fetch all users
-GET http://localhost:8000/users
+GET http://localhost:8080/users
 
 ### ### Create a new user
-POST http://localhost:8000/users/create
+POST http://localhost:8080/users/create
 content-type: application/json
 
 {
@@ -92,10 +92,10 @@ content-type: application/json
 }
 
 ### View the details of the just created User. Pass same user_id
-GET http://localhost:8000/users/17fb37bf-4956-4294-8c96-4192f16be10c
+GET http://localhost:8080/users/17fb37bf-4956-4294-8c96-4192f16be10c
 
 ### Update the details of the just created user. Pass same user_id
-PUT  http://localhost:8000/users/17fb37bf-4956-4294-8c96-4192f16be10c
+PUT  http://localhost:8080/users/17fb37bf-4956-4294-8c96-4192f16be10c
 content-type: application/json
 
 {
@@ -109,16 +109,16 @@ content-type: application/json
 }
 
 ### Delete the just created user. Pass same user_id
-DELETE  http://localhost:8000/users/17fb37bf-4956-4294-8c96-4192f16be10c
+DELETE  http://localhost:8080/users/17fb37bf-4956-4294-8c96-4192f16be10c
 
 
 
 ### DOCUMENTS
 ### Fetch all documents
-GET http://localhost:8000/documents
+GET http://localhost:8080/documents
 
 ### Create a new document
-POST http://localhost:8000/documents/create
+POST http://localhost:8080/documents/create
 content-type: application/json
 
 {
@@ -136,10 +136,10 @@ content-type: application/json
 }
 
 ### View the details of the just created document. Pass same document_id
-GET http://localhost:8000/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
+GET http://localhost:8080/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
 
 ### Update the details of the just created document. Pass same document_id
-PUT  http://localhost:8000/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
+PUT  http://localhost:8080/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
 content-type: application/json
 
 {
@@ -153,5 +153,5 @@ content-type: application/json
 }
 
 ### Delete the just created document. Pass same document_id
-DELETE  http://localhost:8000/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
+DELETE  http://localhost:8080/documents/cbc317ce-6dc9-499a-bdd4-d3664e28ce92
 

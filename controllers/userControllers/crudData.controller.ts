@@ -1,13 +1,13 @@
 import express, { Express, Request, Response} from 'express';
-import userQueries from '../queries/userQueries/crudData.query';
-import config from '../config';
+import userQueries from './crudData.query';
+import config from '../../config';
 
 
 export const postData = (req: Request, res: Response) => {
 
   const { apiKey, collectionName } = req.params;
   const data  = req.body;
-  let postDataParams = {apiKey, collection_name: collectionName, data, env: config.ENVIRONMENT}
+  let postDataParams = {apiKey, collection_name: collectionName, data}
   let errors = [];
   if(Array.isArray(data)){
     errors.push("Data must be an object");
@@ -23,7 +23,7 @@ export const postData = (req: Request, res: Response) => {
       errors: errors
     });
   }
-  userQueries.postData(postDataParams)
+  userQueries.postDataQueries(postDataParams)
   .then((data) => {
     return res.status(data.statusCode).json(data);
   })
@@ -42,7 +42,7 @@ export const readAllData = (req: Request, res: Response) => {
 
   const { apiKey, collectionName } = req.params;
 
-  userQueries.readAllData({apiKey, collection_name: collectionName})
+  userQueries.readAllDataQueries({apiKey, collection_name: collectionName})
   .then((data) => {
     return res.status(data?.statusCode || 201).json(data);
   })
@@ -61,7 +61,7 @@ export const readOneData = (req: Request, res: Response) => {
 
   const { apiKey, collectionName, documentId } = req.params;
 
-  userQueries.readOneData({apiKey, collection_name: collectionName, document_id: documentId })
+  userQueries.readOneDataQueries({apiKey, collection_name: collectionName, document_id: documentId })
   .then((data) => {
     return res.status(data.statusCode).json(data);
   })
@@ -98,7 +98,7 @@ export const updateOneData = (req: Request, res: Response) => {
     });
   }
 
-  userQueries.updateOneData({apiKey, collection_name: collectionName, document_id: documentId, data })
+  userQueries.updateOneDataQueries({apiKey, collection_name: collectionName, document_id: documentId, data })
   .then((data) => {
     console.log
     return res.status(201).json(data);
@@ -120,7 +120,7 @@ export const deleteOneData = (req: Request, res: Response) => {
 
   const { apiKey, collectionName, documentId } = req.params;
 
-  userQueries.deleteOneData({apiKey, collection_name: collectionName, document_id: documentId })
+  userQueries.deleteOneDataQueries({apiKey, collection_name: collectionName, document_id: documentId })
   .then((data) => {
     return res.status(201).json(data);
   })

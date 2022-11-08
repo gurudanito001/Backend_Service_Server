@@ -4,25 +4,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const clusters_1 = __importDefault(require("./queries/clusters"));
-const users_1 = __importDefault(require("./queries/users"));
-const collections_1 = __importDefault(require("./queries/collections"));
-const documents_1 = __importDefault(require("./queries/documents"));
+const clusters_1 = __importDefault(require("./controllers/adminControllers/clusters"));
+const users_1 = __importDefault(require("./controllers/adminControllers/users"));
+const collections_1 = __importDefault(require("./controllers/adminControllers/collections"));
+const documents_1 = __importDefault(require("./controllers/adminControllers/documents"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
-const crudData_controller_1 = require("./userControllers/crudData.controller");
+const crudData_controller_1 = require("./controllers/userControllers/crudData.controller");
+const postDocument_1 = require("./controllers/userControllers/postDocument");
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
     extended: true,
 }));
 app.use((0, cors_1.default)());
+app.get('/hello', (req, res) => {
+    res.send("hello");
+});
 app.get('/clusters', clusters_1.default.getClusters);
 app.get('/clusters/:id', clusters_1.default.getClusterById);
 app.post('/clusters/create', clusters_1.default.createCluster);
 app.put('/clusters/:id', clusters_1.default.updateCluster);
-app.patch('/clusters/freeze/:id', clusters_1.default.deActivateCluster);
-app.patch('/clusters/unfreeze/:id', clusters_1.default.reActivateCluster);
+app.post('/clusters/freeze/:id', clusters_1.default.deActivateCluster);
+app.post('/clusters/unfreeze/:id', clusters_1.default.reActivateCluster);
 app.delete('/clusters/:id', clusters_1.default.deleteCluster);
 app.get('/collections', collections_1.default.getCollections);
 app.get('/collections/:id', collections_1.default.getCollectionById);
@@ -39,10 +43,10 @@ app.get('/documents/:id', documents_1.default.getDocumentById);
 app.post('/documents/create', documents_1.default.createDocument);
 app.put('/documents/:id', documents_1.default.updateDocument);
 app.delete('/documents/:id', documents_1.default.deleteDocument);
-app.post('/:apiKey/:collectionName/create', crudData_controller_1.postData);
+app.post('/:apiKey/:collectionName/create', postDocument_1.postDocument);
 app.get('/:apiKey/:collectionName/read', crudData_controller_1.readAllData);
 app.get('/:apiKey/:collectionName/read/:documentId', crudData_controller_1.readOneData);
-app.patch('/:apiKey/:collectionName/update/:documentId', crudData_controller_1.updateOneData);
+app.post('/:apiKey/:collectionName/update/:documentId', crudData_controller_1.updateOneData);
 app.delete('/:apiKey/:collectionName/delete/:documentId', crudData_controller_1.deleteOneData);
 exports.default = app;
 //# sourceMappingURL=app.js.map

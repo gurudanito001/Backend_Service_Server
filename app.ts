@@ -1,14 +1,14 @@
 import express, { Express, Request, Response} from 'express';
-import clusters from './queries/clusters';
-import users from './queries/users';
-import collections from './queries/collections';
-import documents from './queries/documents';
+import clusters from './controllers/adminControllers/clusters';
+import users from './controllers/adminControllers/users';
+import collections from './controllers/adminControllers/collections';
+import documents from './controllers/adminControllers/documents';
 import bodyParser from 'body-parser';
-import userQueries from './queries/userQueries/crudData.query';
+import userQueries from './controllers/userControllers/crudData.query';
 import config from './config';
 import cors from 'cors';
-import { deleteOneData, postData, readAllData, readOneData, updateOneData } from './userControllers/crudData.controller';
-
+import { deleteOneData, postData, readAllData, readOneData, updateOneData } from './controllers/userControllers/crudData.controller';
+import { postDocument } from './controllers/userControllers/postDocument';
 
 
 const app: Express = express();
@@ -21,14 +21,16 @@ app.use(
 )
 app.use(cors())
 
-
+app.get('/hello', (req, res)=>{
+  res.send("hello")
+})
 
 app.get('/clusters', clusters.getClusters)
 app.get('/clusters/:id', clusters.getClusterById)
 app.post('/clusters/create', clusters.createCluster)
 app.put('/clusters/:id', clusters.updateCluster)
-app.patch('/clusters/freeze/:id', clusters.deActivateCluster)
-app.patch('/clusters/unfreeze/:id', clusters.reActivateCluster)
+app.post('/clusters/freeze/:id', clusters.deActivateCluster)
+app.post('/clusters/unfreeze/:id', clusters.reActivateCluster)
 app.delete('/clusters/:id', clusters.deleteCluster)
 
 app.get('/collections', collections.getCollections)
@@ -50,10 +52,10 @@ app.put('/documents/:id', documents.updateDocument)
 app.delete('/documents/:id', documents.deleteDocument)
 
 
-app.post('/:apiKey/:collectionName/create', postData);
+app.post('/:apiKey/:collectionName/create', postDocument);
 app.get('/:apiKey/:collectionName/read', readAllData);
 app.get('/:apiKey/:collectionName/read/:documentId', readOneData);
-app.patch('/:apiKey/:collectionName/update/:documentId', updateOneData);
+app.post('/:apiKey/:collectionName/update/:documentId', updateOneData);
 app.delete('/:apiKey/:collectionName/delete/:documentId', deleteOneData);
 
 

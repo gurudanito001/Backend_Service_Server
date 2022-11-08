@@ -1,38 +1,67 @@
-export interface createClusterData {
-  name: String,
-  email: String,
-  password: String,
-  description: String,
-  multi_tenant: Boolean
+export interface ClusterData {
+  cluster_id?: string,
+  name: string,
+  email: string,
+  password: string,
+  description: string,
+  multi_tenant: boolean,
+  created_at?: string,
+  updated_at?: string
 }
+export interface CollectionData {
+  collection_id?: string | null,
+  cluster_id: string,
+  name: string,
+  created_at?: string,
+  updated_at?: string
+}
+export interface DocumentData {
+  document_id?: string,
+  cluster_id: string,
+  collection_id: string | null,
+  user_id?: string | null,
+  collection_name: string,
+  data: object,
+  created_at?: string,
+  updated_at?: string
+}
+
+export interface UserData {
+  user_id?: string,
+  cluster_id: string,
+  data: object
+}
+
+
+
+
 
 export interface PostDataObject {
-  apiKey: String,
-  collection_name: String,
-  data: Object,
-  env: String
-}
-
-export interface ReadDataObject {
-  apiKey: String,
-  collection_name: String,
-}
-
-export interface ReadOneDataObject {
-  apiKey: String,
-  collection_name: String,
-  document_id: String
-}
-
-export interface UpdateOneDataObject {
-  apiKey: String,
-  collection_name: String,
-  document_id: String,
+  apiKey: string,
+  collection_name: string,
   data: Object
 }
 
-export interface deleteOneDataObject {
-  apiKey: String,
-  collection_name: String,
-  document_id: String,
+export interface ReadDataObject {
+  apiKey: string,
+  collection_name: string,
+}
+
+export interface ReadOneDataObject {
+  apiKey: string,
+  collection_name: string,
+  document_id: string
+}
+
+export interface UpdateOneDataObject {
+  apiKey: string,
+  collection_name: string,
+  document_id: string,
+  data: Object
+}
+
+export interface DeleteOneDataObject {
+  apiKey: string,
+  collection_name: string,
+  document_id: string,
 }

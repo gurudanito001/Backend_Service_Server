@@ -23,7 +23,8 @@ const getCollectionById = (request, response) => {
 };
 const createCollection = (request, response) => {
     const { cluster_id, user_id, name } = request.body;
-    dbConnection_1.default.query('INSERT INTO collections (cluster_id, user_id, name) VALUES ($1, $2, $3)', [cluster_id, user_id, name], (error, results) => {
+    const date = Date.now().toString();
+    dbConnection_1.default.query('INSERT INTO collections (cluster_id, name, created_at, updated_at) VALUES ($1, $2, $3, $4)', [cluster_id, name, date, date], (error, results) => {
         if (error) {
             return response.status(400).json(error.message);
         }
@@ -32,8 +33,9 @@ const createCollection = (request, response) => {
 };
 const updateCollection = (request, response) => {
     const id = request.params.id;
-    const { cluster_id, user_id, name } = request.body;
-    dbConnection_1.default.query('UPDATE collections SET name = $1 WHERE collection_id = $2', [name, id], (error, results) => {
+    const { name } = request.body;
+    const date = Date.now().toString();
+    dbConnection_1.default.query('UPDATE collections SET name = $1, updated_at = $2 WHERE collection_id = $3', [name, date, id], (error, results) => {
         if (error) {
             return response.status(400).json(error.message);
         }
