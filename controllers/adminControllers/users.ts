@@ -3,6 +3,17 @@ import { UserData } from 'interfaces';
 import UserDbServices from '../../dbServices/users';
 import ClusterDbServices from '../../dbServices/clusters'
 import validator from 'validator';
+import config from '../../config';
+import jwt from 'jsonwebtoken';
+import sendEmail from '../../services/sendEmail';
+import bcrypt from 'bcrypt';
+import { IncomingHttpHeaders } from 'http';
+
+declare module 'http' {
+  interface IncomingHttpHeaders {
+      "apiKey"?: string
+  }
+}
 
 const getUsers = async (request: Request, response: Response) => {
   try {
@@ -29,7 +40,11 @@ const getUserById = async (request: Request, response: Response) => {
 }
 
 const createUser = async (request: Request, response: Response) => {
-  const { cluster_id, data } = request.body;
+  const data = request.body;
+  const {apiKey} = request.headers;
+  if(!apiKey){
+    return response.status(400).send("apiKey is required")
+  }
 
   let keys = Object.keys(data);
   if(!keys.includes("email") || !keys.includes("password")){
@@ -48,10 +63,29 @@ const createUser = async (request: Request, response: Response) => {
     if(emailExists){
       return response.status(400).send("Email already Exists")
     }
-    let user = await UserDbServices.createUser({ cluster_id, data })
+    let hashedPassword = await bcrypt.hash(data.password, 7);
+    let newData = {...data, password: hashedPassword}
+    let user = await UserDbServices.createUser({ cluster_id: apiKey, data: newData }) as UserData
+
     if(user){
-      return response.status(201).json(user)
+      if(data.test_string === config.TEST_STRING.toString()){
+        return response.status(201).json(user)
+      }
+      let unSignedData = {email: data.email, user_id: user.user_id}
+      const token = jwt.sign(unSignedData, config.SECRET, {
+        expiresIn: "900000" //15mins
+      });
+      sendEmail(data.email, `${config.API_BASE_URL}/users/confirmEmail/${token}`, 'verify your email')
+      .then(res =>{
+        return response.status(201).json({
+          messages: ['A verification link has been sent to your email. Link expires in 15mins'],
+          status: "success",
+          statusCode: 200,
+          payload: null
+        })
+      })
     }
+
   } catch (error) {
     return response.status(400).json(error)
   } 

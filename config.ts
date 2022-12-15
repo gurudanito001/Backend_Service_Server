@@ -16,6 +16,9 @@ interface ENV {
   PASSWORD: string | undefined;
   DATABASE_URL: string | undefined;
   ENVIRONMENT: string | undefined;
+  SECRET: string | undefined;
+  TEST_STRING: string | undefined;
+  API_BASE_URL: string | undefined;
 }
 
 interface Config {
@@ -27,6 +30,9 @@ interface Config {
   PASSWORD: string ;
   DATABASE_URL: string ;
   ENVIRONMENT: string ;
+  SECRET: string;
+  TEST_STRING: string;
+  API_BASE_URL: string;
 }
 
 // Loading process.env as ENV interface
@@ -42,6 +48,9 @@ const getConfig = (): ENV => {
     PASSWORD: process.env.PASSWORD,
     DATABASE_URL: process.env.DATABASE_URL,
     ENVIRONMENT: process.env.ENVIRONMENT,
+    SECRET: process.env.SECRET,
+    TEST_STRING: process.env.TEST_STRING,
+    API_BASE_URL: process.env.API_BASE_URL
   };
 };
 

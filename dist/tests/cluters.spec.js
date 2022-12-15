@@ -16,6 +16,9 @@ const app_1 = __importDefault(require("../app"));
 const chai_1 = __importDefault(require("chai"));
 const chaiHttp = require("chai-http");
 require("mocha");
+const dotenv_1 = __importDefault(require("dotenv"));
+const config_1 = __importDefault(require("../config"));
+dotenv_1.default.config();
 chai_1.default.use(chaiHttp);
 const expect = chai_1.default.expect;
 let cluster_id;
@@ -32,7 +35,8 @@ describe('Clusters', () => {
             "email": "randomemail@gmail.com",
             "password": "randompassword",
             "description": "Random description",
-            "multi_tenant": false
+            "multi_tenant": false,
+            "test_string": config_1.default.TEST_STRING.toString()
         };
         return chai_1.default.request(app_1.default)
             .post('/clusters/create')

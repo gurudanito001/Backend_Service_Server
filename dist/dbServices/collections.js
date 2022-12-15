@@ -48,7 +48,18 @@ const getCollectionById = (id) => __awaiter(void 0, void 0, void 0, function* ()
 } */
 const collectionExists = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
-        dbConnection_1.default.query(`select exists(SELECT * FROM collections WHERE collection_id = $1`, [id], (error, results) => {
+        dbConnection_1.default.query(`select exists(SELECT * FROM collections WHERE collection_id = $1)`, [id], (error, results) => {
+            if (error) {
+                return reject(error.message);
+            }
+            return resolve(results.rows[0].exists);
+        });
+    });
+});
+const customCollectionExists = (whereString, paramsObject) => __awaiter(void 0, void 0, void 0, function* () {
+    const values = Object.values(paramsObject);
+    return new Promise((resolve, reject) => {
+        dbConnection_1.default.query(`select exists(SELECT * FROM collections WHERE ${whereString})`, [...values], (error, results) => {
             if (error) {
                 return reject(error.message);
             }
@@ -67,11 +78,11 @@ const customGetCollection = (whereString, valueArray) => __awaiter(void 0, void 
     });
 });
 const createCollection = (collectionData) => {
-    const { name, cluster_id } = collectionData;
+    const { name, cluster_id, structure } = collectionData;
     let lowerCaseName = name.toLocaleLowerCase();
     const date = Date.now().toString();
     return new Promise((resolve, reject) => {
-        dbConnection_1.default.query('INSERT INTO collections (name, cluster_id, created_at, updated_at) VALUES ($1, $2, $3, $4) RETURNING *', [lowerCaseName, cluster_id, date, date], (error, results) => {
+        dbConnection_1.default.query('INSERT INTO collections (name, structure, cluster_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING *', [lowerCaseName, structure, cluster_id, date, date], (error, results) => {
             if (error) {
                 return reject(error.message);
             }
@@ -108,6 +119,7 @@ exports.default = {
     getCollectionById,
     //getCollectionByParams,
     collectionExists,
+    customCollectionExists,
     customGetCollection,
     createCollection,
     updateCollection,

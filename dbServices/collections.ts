@@ -40,7 +40,20 @@ const getCollectionById = async (id: string) => {
 
 const collectionExists = async (id: string) => {
   return new Promise((resolve, reject)=>{
-    pool.query(`select exists(SELECT * FROM collections WHERE collection_id = $1`, [id], (error: any, results: any) => {
+    pool.query(`select exists(SELECT * FROM collections WHERE collection_id = $1)`, [id], (error: any, results: any) => {
+      if (error) {
+        return reject(error.message)
+      }
+      return resolve(results.rows[0].exists)
+    })
+  })
+}
+
+const customCollectionExists = async (whereString: string, paramsObject: object) => {
+  const values = Object.values(paramsObject);
+
+  return new Promise((resolve, reject)=>{
+    pool.query(`select exists(SELECT * FROM collections WHERE ${whereString})`, [...values], (error: any, results: any) => {
       if (error) {
         return reject(error.message)
       }
@@ -61,12 +74,12 @@ const customGetCollection = async (whereString: string, valueArray: string[]) =>
 }
 
 const createCollection = (collectionData: CollectionData) => {
-  const { name, cluster_id } = collectionData;
+  const { name, cluster_id, structure } = collectionData;
   let lowerCaseName = name.toLocaleLowerCase();
   const date = Date.now().toString();
   
   return new Promise((resolve, reject)=>{
-    pool.query('INSERT INTO collections (name, cluster_id, created_at, updated_at) VALUES ($1, $2, $3, $4) RETURNING *', [lowerCaseName, cluster_id, date, date], (error: any, results: any) => {
+    pool.query('INSERT INTO collections (name, structure, cluster_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING *', [lowerCaseName, structure, cluster_id, date, date], (error: any, results: any) => {
       if (error) {
         return reject(error.message)
       }
@@ -113,6 +126,7 @@ export default {
   getCollectionById,
   //getCollectionByParams,
   collectionExists,
+  customCollectionExists,
   customGetCollection,
   createCollection,
   updateCollection,

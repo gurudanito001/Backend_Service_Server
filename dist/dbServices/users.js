@@ -78,6 +78,17 @@ const updateUser = (id, data) => {
         });
     });
 };
+const verifyEmail = (id, email) => __awaiter(void 0, void 0, void 0, function* () {
+    const updated_at = Date.now().toString();
+    return new Promise((resolve, reject) => {
+        dbConnection_1.default.query(`UPDATE users SET email_confirmed = $1, updated_at = $2 WHERE user_id = $3 AND data->'email' = '"$4"' RETURNING *`, [true, updated_at, id, email], (error, results) => {
+            if (error) {
+                return reject(error.message);
+            }
+            return resolve(results.rows[0]);
+        });
+    });
+});
 const deleteUser = (id) => {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('DELETE FROM users WHERE user_id = $1', [id], (error, results) => {
@@ -95,6 +106,7 @@ exports.default = {
     userExists,
     createUser,
     updateUser,
+    verifyEmail,
     deleteUser,
 };
 //# sourceMappingURL=users.js.map

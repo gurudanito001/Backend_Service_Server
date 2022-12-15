@@ -10,8 +10,13 @@ const collections_1 = __importDefault(require("./controllers/adminControllers/co
 const documents_1 = __importDefault(require("./controllers/adminControllers/documents"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
-const crudData_controller_1 = require("./controllers/userControllers/crudData.controller");
 const postDocument_1 = require("./controllers/userControllers/postDocument");
+const readOneDocument_1 = require("./controllers/userControllers/readOneDocument");
+const readAllDocuments_1 = require("./controllers/userControllers/readAllDocuments");
+const updateOneDocument_1 = require("./controllers/userControllers/updateOneDocument");
+const deleteOneDocument_1 = require("./controllers/userControllers/deleteOneDocument");
+const authControllers_1 = require("./controllers/adminControllers/authControllers");
+const authControllers_2 = require("./controllers/userControllers/authControllers");
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
@@ -21,7 +26,13 @@ app.use((0, cors_1.default)());
 app.get('/hello', (req, res) => {
     res.send("hello");
 });
+// ADMIN ENDPOINTS 
+//app.post('/sendEmail', sendAnEmail);
+app.get('/confirmEmail/:token', authControllers_1.confirmEmail);
+app.post('/resetPassword/', authControllers_1.resetPassword);
+app.post('/changePassword/:token', authControllers_1.changePassword);
 app.get('/clusters', clusters_1.default.getClusters);
+app.post('/clusters/login', clusters_1.default.Authenticate);
 app.get('/clusters/:id', clusters_1.default.getClusterById);
 app.post('/clusters/create', clusters_1.default.createCluster);
 app.put('/clusters/:id', clusters_1.default.updateCluster);
@@ -43,10 +54,15 @@ app.get('/documents/:id', documents_1.default.getDocumentById);
 app.post('/documents/create', documents_1.default.createDocument);
 app.put('/documents/:id', documents_1.default.updateDocument);
 app.delete('/documents/:id', documents_1.default.deleteDocument);
-app.post('/:apiKey/:collectionName/create', postDocument_1.postDocument);
-app.get('/:apiKey/:collectionName/read', crudData_controller_1.readAllData);
-app.get('/:apiKey/:collectionName/read/:documentId', crudData_controller_1.readOneData);
-app.post('/:apiKey/:collectionName/update/:documentId', crudData_controller_1.updateOneData);
-app.delete('/:apiKey/:collectionName/delete/:documentId', crudData_controller_1.deleteOneData);
+// USER ENDPOINTS
+app.post('/api/v1/:apiKey/users/register', users_1.default.createUser);
+app.get('/api/v1/users/confirmEmail/:token', authControllers_2.confirmUserEmail);
+app.post('/api/v1/users/resetPassword', authControllers_2.resetUserPassword);
+app.post('/api/v1/users/changePassword/:token', authControllers_2.changeUserPassword);
+app.post('/api/v1/:apiKey/:collectionName', postDocument_1.postDocument);
+app.get('/api/v1/:apiKey/:collectionName/:documentId', readOneDocument_1.readOneDocument);
+app.get('/api/v1/:apiKey/:collectionName', readAllDocuments_1.readAllDocuments);
+app.post('/api/v1/:apiKey/:collectionName/:documentId', updateOneDocument_1.updateOneDocument);
+app.delete('/api/v1/:apiKey/:collectionName/:documentId', deleteOneDocument_1.deleteOneDocument);
 exports.default = app;
 //# sourceMappingURL=app.js.map

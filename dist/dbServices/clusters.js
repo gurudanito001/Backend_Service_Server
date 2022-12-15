@@ -34,10 +34,9 @@ const getClusterById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         });
     });
 });
-const getClusterByParams = (whereString, paramsObject) => __awaiter(void 0, void 0, void 0, function* () {
-    const values = Object.values(paramsObject);
+const getClusterByParams = (whereString, valuesArray) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
-        dbConnection_1.default.query(`SELECT * FROM clusters WHERE ${whereString}`, [...values], (error, results) => {
+        dbConnection_1.default.query(`SELECT * FROM clusters WHERE ${whereString}`, [...valuesArray], (error, results) => {
             if (error) {
                 return reject(error.message);
             }
@@ -99,6 +98,28 @@ const updateCluster = (id, updateClusterData) => {
         });
     });
 };
+const updateClusterByParams = (setString, whereString, valuesArray) => {
+    const updated_at = Date.now().toString();
+    return new Promise((resolve, reject) => {
+        dbConnection_1.default.query(`UPDATE clusters SET ${setString}  WHERE ${whereString} RETURNING *`, [...valuesArray], (error, results) => {
+            if (error) {
+                return reject(error.message);
+            }
+            return resolve(results.rows[0]);
+        });
+    });
+};
+const verifyEmail = (id, email) => __awaiter(void 0, void 0, void 0, function* () {
+    const updated_at = Date.now().toString();
+    return new Promise((resolve, reject) => {
+        dbConnection_1.default.query('UPDATE clusters SET email_confirmed = $1, updated_at = $2 WHERE cluster_id = $3 AND email = $4 RETURNING *', [true, updated_at, id, email], (error, results) => {
+            if (error) {
+                return reject(error.message);
+            }
+            return resolve(results.rows[0]);
+        });
+    });
+});
 const deActivateCluster = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const updated_at = Date.now().toString();
     return new Promise((resolve, reject) => {
@@ -140,6 +161,8 @@ exports.default = {
     JsonbDataExists,
     createCluster,
     updateCluster,
+    updateClusterByParams,
+    verifyEmail,
     deActivateCluster,
     reActivateCluster,
     deleteCluster,

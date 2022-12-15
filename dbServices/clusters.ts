@@ -25,11 +25,11 @@ const getClusterById = async (id: string) => {
   })
 }
 
-const getClusterByParams = async (whereString: string, paramsObject: object) =>{
-  const values = Object.values(paramsObject);
+const getClusterByParams = async (whereString: string, valuesArray: any[]) =>{
+  
 
   return new Promise((resolve, reject)=>{
-    pool.query(`SELECT * FROM clusters WHERE ${whereString}`, [...values], (error: any, results: any) => {
+    pool.query(`SELECT * FROM clusters WHERE ${whereString}`, [...valuesArray], (error: any, results: any) => {
       if (error) {
         return reject(error.message)
       }
@@ -106,6 +106,43 @@ const updateCluster = (id: string, updateClusterData: ClusterData) => {
   })
 }
 
+const updateClusterByParams = (setString: string, whereString: string, valuesArray: any[]) => {
+  const updated_at = Date.now().toString();
+
+  return new Promise((resolve, reject)=>{
+    pool.query(
+      `UPDATE clusters SET ${setString}  WHERE ${whereString} RETURNING *`,
+      [...valuesArray],
+      (error: any, results: any) => {
+        if (error) {
+          return reject(error.message)
+        }
+        return resolve(results.rows[0])
+      }
+    )
+  })
+}
+
+
+
+const verifyEmail = async (id: string, email: string) => {
+  const updated_at = Date.now().toString();
+
+  return new Promise((resolve, reject)=>{
+    pool.query(
+      'UPDATE clusters SET email_confirmed = $1, updated_at = $2 WHERE cluster_id = $3 AND email = $4 RETURNING *',
+      [true, updated_at, id, email],
+      (error: any, results: any) => {
+        if (error) {
+          return reject(error.message)
+        }
+        return resolve(results.rows[0])
+      }
+    )
+  })
+}
+
+
 const deActivateCluster = async (id: string) =>{
   const updated_at = Date.now().toString();
 
@@ -154,6 +191,8 @@ export default {
   JsonbDataExists,
   createCluster,
   updateCluster,
+  updateClusterByParams,
+  verifyEmail,
   deActivateCluster,
   reActivateCluster,
   deleteCluster,

@@ -4,11 +4,15 @@ import users from './controllers/adminControllers/users';
 import collections from './controllers/adminControllers/collections';
 import documents from './controllers/adminControllers/documents';
 import bodyParser from 'body-parser';
-import userQueries from './controllers/userControllers/crudData.query';
 import config from './config';
 import cors from 'cors';
-import { deleteOneData, postData, readAllData, readOneData, updateOneData } from './controllers/userControllers/crudData.controller';
 import { postDocument } from './controllers/userControllers/postDocument';
+import { readOneDocument } from './controllers/userControllers/readOneDocument';
+import { readAllDocuments } from './controllers/userControllers/readAllDocuments';
+import { updateOneDocument } from './controllers/userControllers/updateOneDocument';
+import { deleteOneDocument } from './controllers/userControllers/deleteOneDocument';
+import { sendAnEmail, confirmEmail, resetPassword, changePassword } from './controllers/adminControllers/authControllers';
+import {confirmUserEmail, changeUserPassword, resetUserPassword} from './controllers/userControllers/authControllers';
 
 
 const app: Express = express();
@@ -25,10 +29,17 @@ app.get('/hello', (req, res)=>{
   res.send("hello")
 })
 
-app.get('/clusters', clusters.getClusters)
-app.get('/clusters/:id', clusters.getClusterById)
-app.post('/clusters/create', clusters.createCluster)
-app.put('/clusters/:id', clusters.updateCluster)
+// ADMIN ENDPOINTS 
+//app.post('/sendEmail', sendAnEmail);
+app.get('/confirmEmail/:token', confirmEmail);
+app.post('/resetPassword/', resetPassword); 
+app.post('/changePassword/:token', changePassword);
+
+app.get('/clusters', clusters.getClusters);
+app.post('/clusters/login', clusters.Authenticate);
+app.get('/clusters/:id', clusters.getClusterById);
+app.post('/clusters/create', clusters.createCluster);
+app.put('/clusters/:id', clusters.updateCluster);
 app.post('/clusters/freeze/:id', clusters.deActivateCluster)
 app.post('/clusters/unfreeze/:id', clusters.reActivateCluster)
 app.delete('/clusters/:id', clusters.deleteCluster)
@@ -52,12 +63,19 @@ app.put('/documents/:id', documents.updateDocument)
 app.delete('/documents/:id', documents.deleteDocument)
 
 
-app.post('/:apiKey/:collectionName/create', postDocument);
-app.get('/:apiKey/:collectionName/read', readAllData);
-app.get('/:apiKey/:collectionName/read/:documentId', readOneData);
-app.post('/:apiKey/:collectionName/update/:documentId', updateOneData);
-app.delete('/:apiKey/:collectionName/delete/:documentId', deleteOneData);
 
+// USER ENDPOINTS
+app.post('/api/v1/:apiKey/users/register', users.createUser);
+app.get('/api/v1/users/confirmEmail/:token', confirmUserEmail);
+app.post('/api/v1/users/resetPassword', resetUserPassword);
+app.post('/api/v1/users/changePassword/:token', changeUserPassword);
+
+
+app.post('/api/v1/:apiKey/:collectionName', postDocument);
+app.get('/api/v1/:apiKey/:collectionName/:documentId', readOneDocument);
+app.get('/api/v1/:apiKey/:collectionName', readAllDocuments);
+app.post('/api/v1/:apiKey/:collectionName/:documentId', updateOneDocument);
+app.delete('/api/v1/:apiKey/:collectionName/:documentId', deleteOneDocument);
 
 
 export default app;

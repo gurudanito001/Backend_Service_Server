@@ -81,6 +81,23 @@ const updateUser = (id: string, data: object) => {
   })
 }
 
+const verifyEmail = async (id: string, email: string) => {
+  const updated_at = Date.now().toString();
+
+  return new Promise((resolve, reject)=>{
+    pool.query(
+      `UPDATE users SET email_confirmed = $1, updated_at = $2 WHERE user_id = $3 AND data->'email' = '"$4"' RETURNING *`,
+      [true, updated_at, id, email],
+      (error: any, results: any) => {
+        if (error) {
+          return reject(error.message)
+        }
+        return resolve(results.rows[0])
+      }
+    )
+  })
+}
+
 const deleteUser = (id: string) => {
 
   return new Promise((resolve, reject)=>{
@@ -100,6 +117,7 @@ export default {
   userExists,
   createUser,
   updateUser,
+  verifyEmail,
   deleteUser,
 }
 

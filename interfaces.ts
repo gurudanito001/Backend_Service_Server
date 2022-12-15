@@ -1,3 +1,5 @@
+import exp from "constants"
+
 export interface ClusterData {
   cluster_id?: string,
   name: string,
@@ -12,6 +14,7 @@ export interface CollectionData {
   collection_id?: string | null,
   cluster_id: string,
   name: string,
+  structure?: object,
   created_at?: string,
   updated_at?: string
 }
@@ -31,10 +34,6 @@ export interface UserData {
   cluster_id: string,
   data: object
 }
-
-
-
-
 
 export interface PostDataObject {
   apiKey: string,
@@ -64,4 +63,9 @@ export interface DeleteOneDataObject {
   apiKey: string,
   collection_name: string,
   document_id: string,
+}
+
+export interface LoginCredentials {
+  email: string,
+  password: string
 }

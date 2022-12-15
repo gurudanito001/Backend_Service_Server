@@ -2,6 +2,10 @@ import app from '../app';
 import chai from 'chai';
 import chaiHttp = require('chai-http');
 import 'mocha';
+import dotenv from 'dotenv';
+import config from '../config';
+
+dotenv.config()
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -21,7 +25,8 @@ describe('Clusters', () => {
       "email": "randomemail@gmail.com",
       "password": "randompassword",
       "description": "Random description",
-      "multi_tenant": false
+      "multi_tenant": false,
+      "test_string": config.TEST_STRING.toString()
     }
     return chai.request(app)
     .post('/clusters/create')

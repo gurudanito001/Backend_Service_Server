@@ -34,7 +34,7 @@ const getDocumentById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         });
     });
 });
-const getDocumentByParams = (whereString, paramsObject) => __awaiter(void 0, void 0, void 0, function* () {
+const getOneDocumentByParams = (whereString, paramsObject) => __awaiter(void 0, void 0, void 0, function* () {
     const values = Object.values(paramsObject);
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query(`SELECT * FROM documents WHERE ${whereString}`, [...values], (error, results) => {
@@ -42,6 +42,17 @@ const getDocumentByParams = (whereString, paramsObject) => __awaiter(void 0, voi
                 return reject(error.message);
             }
             return resolve(results.rows[0]);
+        });
+    });
+});
+const getAllDocumentsByParams = (whereString, paramsObject) => __awaiter(void 0, void 0, void 0, function* () {
+    const values = Object.values(paramsObject);
+    return new Promise((resolve, reject) => {
+        dbConnection_1.default.query(`SELECT * FROM documents WHERE ${whereString}`, [...values], (error, results) => {
+            if (error) {
+                return reject(error.message);
+            }
+            return resolve(results.rows);
         });
     });
 });
@@ -91,7 +102,8 @@ const deleteDocument = (id) => {
 exports.default = {
     getAllDocuments,
     getDocumentById,
-    getDocumentByParams,
+    getOneDocumentByParams,
+    getAllDocumentsByParams,
     documentExists,
     createDocument,
     updateDocument,

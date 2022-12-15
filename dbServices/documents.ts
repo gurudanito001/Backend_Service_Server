@@ -25,7 +25,7 @@ const getDocumentById = async (id: string) => {
   })
 }
 
-const getDocumentByParams = async (whereString: string, paramsObject: object) =>{
+const getOneDocumentByParams = async (whereString: string, paramsObject: object) =>{
   const values = Object.values(paramsObject);
 
   return new Promise((resolve, reject)=>{
@@ -34,6 +34,19 @@ const getDocumentByParams = async (whereString: string, paramsObject: object) =>
         return reject(error.message)
       }
       return resolve(results.rows[0])
+    })
+  })
+}
+
+const getAllDocumentsByParams = async (whereString: string, paramsObject: object) =>{
+  const values = Object.values(paramsObject);
+
+  return new Promise((resolve, reject)=>{
+    pool.query(`SELECT * FROM documents WHERE ${whereString}`, [...values], (error: any, results: any) => {
+      if (error) {
+        return reject(error.message)
+      }
+      return resolve(results.rows)
     })
   })
 }
@@ -96,7 +109,8 @@ const deleteDocument = (id: string) => {
 export default {
   getAllDocuments,
   getDocumentById,
-  getDocumentByParams,
+  getOneDocumentByParams,
+  getAllDocumentsByParams,
   documentExists,
   createDocument,
   updateDocument,

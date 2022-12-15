@@ -15,6 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = __importDefault(require("../../dbServices/users"));
 const clusters_1 = __importDefault(require("../../dbServices/clusters"));
 const validator_1 = __importDefault(require("validator"));
+const config_1 = __importDefault(require("../../config"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const sendEmail_1 = __importDefault(require("../../services/sendEmail"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const getUsers = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let allUsers = yield users_1.default.getAllUsers();
@@ -38,7 +42,11 @@ const getUserById = (request, response) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 const createUser = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { cluster_id, data } = request.body;
+    const data = request.body;
+    const { apiKey } = request.headers;
+    if (!apiKey) {
+        return response.status(400).send("apiKey is required");
+    }
     let keys = Object.keys(data);
     if (!keys.includes("email") || !keys.includes("password")) {
         return response.status(400).send("Email and Password fields are required");
@@ -54,9 +62,26 @@ const createUser = (request, response) => __awaiter(void 0, void 0, void 0, func
         if (emailExists) {
             return response.status(400).send("Email already Exists");
         }
-        let user = yield users_1.default.createUser({ cluster_id, data });
+        let hashedPassword = yield bcrypt_1.default.hash(data.password, 7);
+        let newData = Object.assign(Object.assign({}, data), { password: hashedPassword });
+        let user = yield users_1.default.createUser({ cluster_id: apiKey, data: newData });
         if (user) {
-            return response.status(201).json(user);
+            if (data.test_string === config_1.default.TEST_STRING.toString()) {
+                return response.status(201).json(user);
+            }
+            let unSignedData = { email: data.email, user_id: user.user_id };
+            const token = jsonwebtoken_1.default.sign(unSignedData, config_1.default.SECRET, {
+                expiresIn: "900000" //15mins
+            });
+            (0, sendEmail_1.default)(data.email, `${config_1.default.API_BASE_URL}/users/confirmEmail/${token}`, 'verify your email')
+                .then(res => {
+                return response.status(201).json({
+                    messages: ['A verification link has been sent to your email. Link expires in 15mins'],
+                    status: "success",
+                    statusCode: 200,
+                    payload: null
+                });
+            });
         }
     }
     catch (error) {
