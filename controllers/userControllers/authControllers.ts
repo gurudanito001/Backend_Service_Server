@@ -43,6 +43,7 @@ export const confirmUserEmail = async (request: Request, response: Response) =>{
 
 export const resetUserPassword = async (request: Request, response: Response) =>{
   const {email} = request.body;
+  //check if email exists in the system
   
   try {
     let emailExists = await ClusterDbServices.JsonbDataExists("users", "email", email);

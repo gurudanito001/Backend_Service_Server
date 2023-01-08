@@ -12,7 +12,9 @@ const getConfig = () => {
     return {
         SERVER_PORT: Number(process.env.PORT),
         DB_PORT: Number(process.env.DB_PORT),
+        DB_LOCAL_PORT: Number(process.env.DB_LOCAL_PORT),
         DB_HOST: process.env.DB_HOST,
+        DB_LOCALHOST: process.env.DB_LOCALHOST,
         DB_USER: process.env.DB_USER,
         DATABASE: process.env.DATABASE,
         PASSWORD: process.env.PASSWORD,

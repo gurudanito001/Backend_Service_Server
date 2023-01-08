@@ -50,6 +50,7 @@ const confirmUserEmail = (request, response) => __awaiter(void 0, void 0, void 0
 exports.confirmUserEmail = confirmUserEmail;
 const resetUserPassword = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = request.body;
+    //check if email exists in the system
     try {
         let emailExists = yield clusters_1.default.JsonbDataExists("users", "email", email);
         if (!emailExists) {

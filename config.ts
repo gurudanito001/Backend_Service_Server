@@ -10,7 +10,9 @@ dotenv.config();
 interface ENV {
   SERVER_PORT: number | undefined;
   DB_PORT: number | undefined;
+  DB_LOCAL_PORT: number | undefined;
   DB_HOST: string | undefined;
+  DB_LOCALHOST: string | undefined;
   DB_USER: string | undefined;
   DATABASE: string | undefined;
   PASSWORD: string | undefined;
@@ -24,7 +26,9 @@ interface ENV {
 interface Config {
   SERVER_PORT: number ;
   DB_PORT: number ;
+  DB_LOCAL_PORT: number ;
   DB_HOST: string ;
+  DB_LOCALHOST: string ;
   DB_USER: string ;
   DATABASE: string ;
   PASSWORD: string ;
@@ -42,7 +46,9 @@ const getConfig = (): ENV => {
   return {
     SERVER_PORT: Number(process.env.PORT),
     DB_PORT: Number(process.env.DB_PORT),
+    DB_LOCAL_PORT: Number(process.env.DB_LOCAL_PORT),
     DB_HOST: process.env.DB_HOST ,
+    DB_LOCALHOST: process.env.DB_LOCALHOST ,
     DB_USER: process.env.DB_USER,
     DATABASE: process.env.DATABASE,
     PASSWORD: process.env.PASSWORD,
