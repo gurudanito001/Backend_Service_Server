@@ -28,20 +28,20 @@ const postDocument = (request, response) => __awaiter(void 0, void 0, void 0, fu
     const isValidApiKey = validator_1.default.isUUID(apiKey, 4);
     //validate Data. Make sure data types are correct.
     if (!(typeof (data) === "object" && !Array.isArray(data))) {
-        return response.status(400).json({ error: "data must be an object" });
+        return response.status(400).json({ message: "data must be an object" });
     }
     if (Object.keys(data).length === 0) {
-        return response.status(400).json({ error: "data must not be empty" });
+        return response.status(400).json({ message: "data must not be empty" });
     }
     if (!isValidApiKey) {
-        return response.status(400).json({ error: "apiKey is not valid" });
+        return response.status(400).json({ message: "apiKey is not valid" });
     }
     try {
         /* Database Validations begin */
         // Check if cluster exists
         let cluster = yield clusters_1.default.getClusterById(apiKey);
         if (!cluster) {
-            return response.status(400).json({ error: "Cluster does not exist" });
+            return response.status(400).json({ message: "Cluster does not exist" });
         }
         // If Cluster is multi_tenant, user_id is required!!
         /* if(!cluster?.multi_tenant && !data.user_id){
@@ -73,7 +73,7 @@ const postDocument = (request, response) => __awaiter(void 0, void 0, void 0, fu
         });
     }
     catch (error) {
-        return response.status(400).send({ error });
+        return response.status(400).send({ message: error.message });
     }
 });
 exports.postDocument = postDocument;

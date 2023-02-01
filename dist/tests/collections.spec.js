@@ -23,29 +23,29 @@ describe('Collections', () => {
     it('Fetch all Collections', () => __awaiter(void 0, void 0, void 0, function* () {
         return chai_1.default.request(app_1.default).get('/collections')
             .then(res => {
-            expect(res.body).to.be.an("array");
+            expect(res.body.payload).to.be.an("array");
         });
     }));
     it('Create a Collection', () => __awaiter(void 0, void 0, void 0, function* () {
         let data = {
-            "cluster_id": "325c87ca-c74a-4af7-a71f-4af6a634d421",
-            "name": "Random Name",
+            "cluster_id": "72bbebaf-4d9f-4286-8dba-3ecce1133561",
+            "name": "Test Collection",
         };
         return chai_1.default.request(app_1.default)
             .post('/collections/create')
             .send(data)
             .then(res => {
-            collection_id = res.body.collection_id;
-            expect(res.body).to.be.an("object");
-            expect(res.body.cluster_id).to.equal(data.cluster_id);
+            collection_id = res.body.payload.collection_id;
+            expect(res.body.payload).to.be.an("object");
+            expect(res.body.payload.cluster_id).to.equal(data.cluster_id);
         });
     }));
     it('Get a Collection', () => __awaiter(void 0, void 0, void 0, function* () {
         return chai_1.default.request(app_1.default)
             .get(`/collections/${collection_id}`)
             .then(res => {
-            expect(res.body).to.be.an("object");
-            expect(res.body.collection_id).to.equal(collection_id);
+            expect(res.body.payload).to.be.an("object");
+            expect(res.body.payload.collection_id).to.equal(collection_id);
         });
     }));
     it('Update a Collection', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -56,16 +56,16 @@ describe('Collections', () => {
             .put(`/collections/${collection_id}`)
             .send(data)
             .then(res => {
-            expect(res.body).to.be.an("object");
-            expect(res.body.name).to.equal(data.name.toLowerCase());
+            expect(res.body.payload).to.be.an("object");
+            expect(res.body.payload.name).to.equal(data.name.toLowerCase());
         });
     }));
     it('Delete a Collection', () => __awaiter(void 0, void 0, void 0, function* () {
         return chai_1.default.request(app_1.default)
             .delete(`/collections/${collection_id}`)
             .then(res => {
-            expect(res.body).to.be.an("object");
-            expect(res.body.message).to.contain(collection_id.toLowerCase());
+            expect(res.body.payload).to.equal(null);
+            expect(res.body.message[0]).to.contain(collection_id.toLowerCase());
         });
     }));
 });

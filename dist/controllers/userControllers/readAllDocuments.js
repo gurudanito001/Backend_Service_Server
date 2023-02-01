@@ -21,31 +21,31 @@ const readAllDocuments = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const { apiKey, collectionName } = req.params;
     const isValidApiKey = validator_1.default.isUUID(apiKey, 4);
     if (!isValidApiKey) {
-        return res.status(400).json({ error: "apiKey is not valid" });
+        return res.status(400).json({ message: "apiKey is not valid" });
     }
     try {
         // Database validations
         let clusterExists = yield clusters_1.default.clusterExists(apiKey);
         if (!clusterExists) {
-            return res.status(404).json({ error: "Cluster does not exist" });
+            return res.status(404).json({ message: "Cluster does not exist" });
         }
         let collectionExists = yield collections_1.default.customCollectionExists("cluster_id = $1 AND name = $2 ", { apiKey, collectionName });
         if (!collectionExists) {
-            return res.status(404).json({ error: "Collection does not exist" });
+            return res.status(404).json({ message: "Collection does not exist" });
         }
         let documents = yield documents_1.default.getAllDocumentsByParams("cluster_id = $1 AND collection_name = $2", { apiKey, collectionName });
         if (!documents) {
-            return res.status(404).json({ error: "Documents Not found" });
+            return res.status(404).json({ message: "Documents Not found" });
         }
-        return res.status(201).json({
-            messages: ['Data retreived successfully'],
+        return res.status(200).json({
+            messages: ['Data fetched successfully'],
             status: "success",
-            statusCode: 201,
+            statusCode: 200,
             payload: documents
         });
     }
     catch (error) {
-        return res.status(400).json({ error });
+        return res.status(400).json({ message: error.message });
     }
 });
 exports.readAllDocuments = readAllDocuments;

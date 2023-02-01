@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const deriveDataType = (value) => {
     let result = typeof (value);
     if (result === "object") {
-        if (typeof (value.length) === "number") {
+        if (Array.isArray(value)) {
             result = "array";
         }
     }

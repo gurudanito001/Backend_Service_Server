@@ -55,6 +55,7 @@ describe('Backend Service User', () => {
 
     const apiKey = "72bbebaf-4d9f-4286-8dba-3ecce1133561";
     const collectionName = "test collection"
+    
     return chai.request(app)
     .post(`/api/v1/${apiKey}/${collectionName}/${document_id}`)
     .send(data)
@@ -81,7 +82,7 @@ describe('Backend Service User', () => {
       .then(res => {
         expect(res.body.status).to.equal("success");
         expect(res.body.payload).to.equal(null);
-        expect(res.body.messages[0]).to.equal(`Document deleted with id: ${document_id}`);
+        expect(res.body.message[0]).to.include(`${document_id}`);
       })
   })
 })

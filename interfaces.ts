@@ -7,6 +7,9 @@ export interface ClusterData {
   password: string,
   description: string,
   multi_tenant: boolean,
+  isactive?: boolean,
+  email_confirmed?: boolean,
+  is_admin?: boolean,
   created_at?: string,
   updated_at?: string
 }
@@ -29,10 +32,17 @@ export interface DocumentData {
   updated_at?: string
 }
 
+interface UserObject {
+  email: string,
+  password: string
+}
 export interface UserData {
   user_id?: string,
   cluster_id: string,
-  data: object
+  data: UserObject
+  created_at?: string,
+  updated_at?: string,
+  email_confirmed?: boolean,
 }
 
 export interface PostDataObject {
@@ -68,4 +78,12 @@ export interface DeleteOneDataObject {
 export interface LoginCredentials {
   email: string,
   password: string
+}
+
+export interface StructureData {
+  id?: string,
+  cluster_id: string,
+  structure: object,
+  created_at?: string,
+  updated_at?: string,
 }

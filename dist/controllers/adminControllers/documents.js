@@ -16,10 +16,15 @@ const documents_1 = __importDefault(require("../../dbServices/documents"));
 const getDocuments = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let allDocuments = yield documents_1.default.getAllDocuments();
-        return response.status(201).json(allDocuments);
+        return response.status(200).json({
+            message: [`Documents fetched SuccessFully`],
+            status: "success",
+            statusCode: 200,
+            payload: allDocuments
+        });
     }
     catch (error) {
-        return response.status(400).json(error);
+        return response.status(400).json({ message: error.message });
     }
 });
 const getDocumentById = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,12 +32,17 @@ const getDocumentById = (request, response) => __awaiter(void 0, void 0, void 0,
     try {
         let document = yield documents_1.default.getDocumentById(id);
         if (document) {
-            return response.status(201).json(document);
+            return response.status(200).json({
+                message: [`Document fetched SuccessFully`],
+                status: "success",
+                statusCode: 200,
+                payload: document
+            });
         }
-        return response.status(404).json({ error: "Document Not Found" });
+        return response.status(404).json({ message: "Document Not Found" });
     }
     catch (error) {
-        return response.status(400).json(error);
+        return response.status(400).json({ message: error.message });
     }
 });
 const createDocument = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,11 +50,16 @@ const createDocument = (request, response) => __awaiter(void 0, void 0, void 0, 
     try {
         let document = yield documents_1.default.createDocument({ user_id, collection_id, cluster_id, collection_name, data });
         if (document) {
-            return response.status(201).json(document);
+            return response.status(201).json({
+                message: [`Document created SuccessFully`],
+                status: "success",
+                statusCode: 201,
+                payload: document
+            });
         }
     }
     catch (error) {
-        return response.status(400).json(error);
+        return response.status(400).json({ message: error.message });
     }
 });
 const updateDocument = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,21 +73,31 @@ const updateDocument = (request, response) => __awaiter(void 0, void 0, void 0, 
         let newData = Object.assign(Object.assign({}, oldDocument.data), newDocument.data);
         let document = yield documents_1.default.updateDocument(id, newData);
         if (document) {
-            return response.status(201).json(document);
+            return response.status(201).json({
+                message: [`Document updated SuccessFully`],
+                status: "success",
+                statusCode: 200,
+                payload: document
+            });
         }
     }
     catch (error) {
-        return response.status(400).json(error);
+        return response.status(400).json({ message: error.message });
     }
 });
 const deleteDocument = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const id = request.params.id;
     try {
         let documentId = yield documents_1.default.deleteDocument(id);
-        return response.status(200).send({ message: `Document deleted with ID: ${documentId}` });
+        return response.status(200).send({
+            message: [`Document deleted with ID: ${documentId}`],
+            status: "success",
+            statusCode: 200,
+            payload: null
+        });
     }
     catch (error) {
-        return response.status(400).json(error);
+        return response.status(400).json({ message: error.message });
     }
 });
 exports.default = {

@@ -2,7 +2,7 @@
 const deriveDataType = (value: any)=>{
   let result: any = typeof(value);
   if(result === "object"){
-    if(typeof(value.length) === "number"){
+    if(Array.isArray(value)){
       result = "array";
     }
   }

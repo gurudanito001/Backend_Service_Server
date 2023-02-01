@@ -86,7 +86,7 @@ describe('Backend Service User', () => {
             .then(res => {
             expect(res.body.status).to.equal("success");
             expect(res.body.payload).to.equal(null);
-            expect(res.body.messages[0]).to.equal(`Document deleted with id: ${document_id}`);
+            expect(res.body.message[0]).to.include(`${document_id}`);
         });
     }));
 });

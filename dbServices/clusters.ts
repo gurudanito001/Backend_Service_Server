@@ -1,7 +1,7 @@
 import pool from '../dbConnection';
 import { ClusterData } from 'interfaces';
 
-const getAllClusters = () => {
+const getAllClusters = async () => {
   return new Promise((resolve, reject)=>{
     pool.query('SELECT * FROM clusters', (error: any, results: any) => {
       if (error) {
@@ -27,7 +27,6 @@ const getClusterById = async (id: string) => {
 
 const getClusterByParams = async (whereString: string, valuesArray: any[]) =>{
   
-
   return new Promise((resolve, reject)=>{
     pool.query(`SELECT * FROM clusters WHERE ${whereString}`, [...valuesArray], (error: any, results: any) => {
       if (error) {
@@ -73,7 +72,7 @@ const JsonbDataExists = async (table: string, field: string, value: string) => {
 
 
 
-const createCluster = (clusterData: ClusterData) => {
+const createCluster = async (clusterData: ClusterData) => {
   const { name, email, password, description, multi_tenant } = clusterData;
   const date = Date.now().toString();
   
@@ -88,7 +87,7 @@ const createCluster = (clusterData: ClusterData) => {
   
 }
 
-const updateCluster = (id: string, updateClusterData: ClusterData) => {
+const updateCluster = async (id: string, updateClusterData: ClusterData) => {
   const { name, email, password, description, multi_tenant } = updateClusterData;
   const updated_at = Date.now().toString();
 
@@ -106,7 +105,7 @@ const updateCluster = (id: string, updateClusterData: ClusterData) => {
   })
 }
 
-const updateClusterByParams = (setString: string, whereString: string, valuesArray: any[]) => {
+const updateClusterByParams = async (setString: string, whereString: string, valuesArray: any[]) => {
   const updated_at = Date.now().toString();
 
   return new Promise((resolve, reject)=>{
@@ -169,7 +168,7 @@ const reActivateCluster = async (id: string) =>{
   })
 }
 
-const deleteCluster = (id: string) => {
+const deleteCluster = async (id: string) => {
 
   return new Promise((resolve, reject)=>{
     pool.query('DELETE FROM clusters WHERE cluster_id = $1', [id], (error: any, results: any) => {

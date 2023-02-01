@@ -6,6 +6,7 @@ import { ClusterData, CollectionData } from 'interfaces';
 import { DocumentData } from 'interfaces';
 import validator from 'validator';
 import structureGenerator from '../../services/generateDataStructure';
+import { doesDataMatchStructure } from '../../services/doesDataMatchStructure';
 
 
 
@@ -22,13 +23,13 @@ export const postDocument = async (request: Request, response: Response) => {
 
   //validate Data. Make sure data types are correct.
   if( !(typeof(data) === "object" && !Array.isArray(data)) ){
-    return response.status(400).json({error: "data must be an object"})
+    return response.status(400).json({message: "data must be an object"})
   }
   if(Object.keys(data).length === 0){
-    return response.status(400).json({error: "data must not be empty"})
+    return response.status(400).json({message: "data must not be empty"})
   }
   if(!isValidApiKey){
-    return response.status(400).json({error: "apiKey is not valid"})
+    return response.status(400).json({message: "apiKey is not valid"})
   }
 
 
@@ -37,7 +38,7 @@ export const postDocument = async (request: Request, response: Response) => {
     // Check if cluster exists
     let cluster: ClusterData = await ClusterDbServices.getClusterById(apiKey) as ClusterData;
     if(!cluster){
-      return response.status(400).json({error: "Cluster does not exist"})
+      return response.status(400).json({message: "Cluster does not exist"})
     }
     // If Cluster is multi_tenant, user_id is required!!
     /* if(!cluster?.multi_tenant && !data.user_id){
@@ -54,6 +55,10 @@ export const postDocument = async (request: Request, response: Response) => {
       collection_id = newCollection.collection_id
       newCollectionCreated = true;
     }else{
+      let dataMatchesCollection = doesDataMatchStructure(data, collection.structure);
+      if(!dataMatchesCollection){
+        return response.status(400).json({message: `Data does not match '${collectionName}' structure`})
+      }
       collection_id = collection.collection_id
     }
     /* Database Validations end */
@@ -65,13 +70,13 @@ export const postDocument = async (request: Request, response: Response) => {
     successMessages.push("New document created");
     newCollectionCreated && successMessages.push("New collection created");
     return response.status(201).json({
-      messages: successMessages,
+      message: successMessages,
       status: "success",
       statusCode: 201,
       payload: newDocument
     })
 
-  } catch (error) {
-    return response.status(400).send({error})
+  } catch (error: any) {
+    return response.status(400).send({message: error.message})
   }
 };

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbConnection_1 = __importDefault(require("../dbConnection"));
-const getAllCollections = () => {
+const getAllCollections = () => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('SELECT * FROM collections', (error, results) => {
             if (error) {
@@ -22,7 +22,7 @@ const getAllCollections = () => {
             return resolve(results.rows);
         });
     });
-};
+});
 const getCollectionById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('SELECT * FROM collections WHERE collection_id = $1', [id], (error, results) => {
@@ -77,7 +77,7 @@ const customGetCollection = (whereString, valueArray) => __awaiter(void 0, void 
         });
     });
 });
-const createCollection = (collectionData) => {
+const createCollection = (collectionData) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, cluster_id, structure } = collectionData;
     let lowerCaseName = name.toLocaleLowerCase();
     const date = Date.now().toString();
@@ -89,8 +89,8 @@ const createCollection = (collectionData) => {
             return resolve(results.rows[0]);
         });
     });
-};
-const updateCollection = (id, updateCollectionData) => {
+});
+const updateCollection = (id, updateCollectionData) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = updateCollectionData;
     let lowerCaseName = name.toLocaleLowerCase();
     // After updating a collection name, you will need to update the name in all documents that belong to that collection
@@ -103,8 +103,8 @@ const updateCollection = (id, updateCollectionData) => {
             return resolve(results.rows[0]);
         });
     });
-};
-const deleteCollection = (id) => {
+});
+const deleteCollection = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('DELETE FROM collections WHERE collection_id = $1', [id], (error, results) => {
             if (error) {
@@ -113,7 +113,7 @@ const deleteCollection = (id) => {
             return resolve(id);
         });
     });
-};
+});
 exports.default = {
     getAllCollections,
     getCollectionById,

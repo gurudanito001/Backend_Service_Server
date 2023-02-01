@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbConnection_1 = __importDefault(require("../dbConnection"));
-const getAllDocuments = () => {
+const getAllDocuments = () => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('SELECT * FROM documents', (error, results) => {
             if (error) {
@@ -22,7 +22,7 @@ const getAllDocuments = () => {
             return resolve(results.rows);
         });
     });
-};
+});
 const getDocumentById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('SELECT * FROM documents WHERE document_id = $1', [id], (error, results) => {
@@ -58,7 +58,7 @@ const getAllDocumentsByParams = (whereString, paramsObject) => __awaiter(void 0,
 });
 const documentExists = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
-        dbConnection_1.default.query(`select exists(SELECT * FROM documents WHERE document_id = $1`, [id], (error, results) => {
+        dbConnection_1.default.query(`select exists(SELECT * FROM documents WHERE document_id = $1)`, [id], (error, results) => {
             if (error) {
                 return reject(error.message);
             }
@@ -66,7 +66,7 @@ const documentExists = (id) => __awaiter(void 0, void 0, void 0, function* () {
         });
     });
 });
-const createDocument = (documentData) => {
+const createDocument = (documentData) => __awaiter(void 0, void 0, void 0, function* () {
     const { cluster_id, collection_id, user_id, collection_name, data } = documentData;
     const date = Date.now().toString();
     return new Promise((resolve, reject) => {
@@ -77,8 +77,8 @@ const createDocument = (documentData) => {
             return resolve(results.rows[0]);
         });
     });
-};
-const updateDocument = (id, data) => {
+});
+const updateDocument = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
     const updated_at = Date.now().toString();
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('UPDATE documents SET data = $1, updated_at = $2 WHERE document_id = $3 RETURNING *', [data, updated_at, id], (error, results) => {
@@ -88,8 +88,8 @@ const updateDocument = (id, data) => {
             return resolve(results.rows[0]);
         });
     });
-};
-const deleteDocument = (id) => {
+});
+const deleteDocument = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('DELETE FROM documents WHERE document_id = $1', [id], (error, results) => {
             if (error) {
@@ -98,7 +98,7 @@ const deleteDocument = (id) => {
             return resolve(id);
         });
     });
-};
+});
 exports.default = {
     getAllDocuments,
     getDocumentById,

@@ -1,18 +1,21 @@
+import structureGenerator from "./generateDataStructure";
 
-const doesDataMatchStructure = (data: any, structure: any) =>{
-  let dataKeys =  Object.keys(data);
+export const doesDataMatchStructure = (data: any, structure: any) =>{
   let structureKeys = Object.keys(structure);
+  let dataStructure = structureGenerator(data);
+  let dataStructureKeys = Object.keys(dataStructure);
+  let result = true;
 
-  if(dataKeys.length !== structureKeys.length){
-    return false;
+  if(dataStructureKeys.length !== structureKeys.length){
+    result = false;
   }
   for (let i = 0; i < structureKeys.length; i++) {
-    if(!dataKeys.includes(structureKeys[i])){
-      return false
-    }else if(typeof(data[structureKeys[i]]) !== structure[structureKeys[i]]){
-      return false
+    if(!structureKeys.includes(dataStructureKeys[i])){
+      result = false;
+    }else if(dataStructure[structureKeys[i]] !== structure[structureKeys[i]]){
+      result = false;
     }
   }
 
-  return true
+  return result
 }

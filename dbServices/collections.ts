@@ -1,7 +1,7 @@
 import pool from '../dbConnection';
 import { CollectionData } from '../interfaces';
 
-const getAllCollections = () => {
+const getAllCollections = async () => {
   return new Promise((resolve, reject)=>{
     pool.query('SELECT * FROM collections', (error: any, results: any) => {
       if (error) {
@@ -73,7 +73,7 @@ const customGetCollection = async (whereString: string, valueArray: string[]) =>
   })
 }
 
-const createCollection = (collectionData: CollectionData) => {
+const createCollection = async (collectionData: CollectionData) => {
   const { name, cluster_id, structure } = collectionData;
   let lowerCaseName = name.toLocaleLowerCase();
   const date = Date.now().toString();
@@ -89,7 +89,7 @@ const createCollection = (collectionData: CollectionData) => {
   
 }
 
-const updateCollection = (id: string, updateCollectionData: CollectionData) => {
+const updateCollection = async (id: string, updateCollectionData: CollectionData) => {
   const { name } = updateCollectionData;
   let lowerCaseName = name.toLocaleLowerCase();
   // After updating a collection name, you will need to update the name in all documents that belong to that collection
@@ -109,7 +109,7 @@ const updateCollection = (id: string, updateCollectionData: CollectionData) => {
   })
 }
 
-const deleteCollection = (id: string) => {
+const deleteCollection = async (id: string) => {
 
   return new Promise((resolve, reject)=>{
     pool.query('DELETE FROM collections WHERE collection_id = $1', [id], (error: any, results: any) => {

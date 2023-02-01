@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbConnection_1 = __importDefault(require("../dbConnection"));
-const getAllClusters = () => {
+const getAllClusters = () => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('SELECT * FROM clusters', (error, results) => {
             if (error) {
@@ -22,7 +22,7 @@ const getAllClusters = () => {
             return resolve(results.rows);
         });
     });
-};
+});
 const getClusterById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('SELECT * FROM clusters WHERE cluster_id = $1', [id], (error, results) => {
@@ -74,7 +74,7 @@ const JsonbDataExists = (table, field, value) => __awaiter(void 0, void 0, void 
         });
     });
 });
-const createCluster = (clusterData) => {
+const createCluster = (clusterData) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, description, multi_tenant } = clusterData;
     const date = Date.now().toString();
     return new Promise((resolve, reject) => {
@@ -85,8 +85,8 @@ const createCluster = (clusterData) => {
             return resolve(results.rows[0]);
         });
     });
-};
-const updateCluster = (id, updateClusterData) => {
+});
+const updateCluster = (id, updateClusterData) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, description, multi_tenant } = updateClusterData;
     const updated_at = Date.now().toString();
     return new Promise((resolve, reject) => {
@@ -97,8 +97,8 @@ const updateCluster = (id, updateClusterData) => {
             return resolve(results.rows[0]);
         });
     });
-};
-const updateClusterByParams = (setString, whereString, valuesArray) => {
+});
+const updateClusterByParams = (setString, whereString, valuesArray) => __awaiter(void 0, void 0, void 0, function* () {
     const updated_at = Date.now().toString();
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query(`UPDATE clusters SET ${setString}  WHERE ${whereString} RETURNING *`, [...valuesArray], (error, results) => {
@@ -108,7 +108,7 @@ const updateClusterByParams = (setString, whereString, valuesArray) => {
             return resolve(results.rows[0]);
         });
     });
-};
+});
 const verifyEmail = (id, email) => __awaiter(void 0, void 0, void 0, function* () {
     const updated_at = Date.now().toString();
     return new Promise((resolve, reject) => {
@@ -142,7 +142,7 @@ const reActivateCluster = (id) => __awaiter(void 0, void 0, void 0, function* ()
         });
     });
 });
-const deleteCluster = (id) => {
+const deleteCluster = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         dbConnection_1.default.query('DELETE FROM clusters WHERE cluster_id = $1', [id], (error, results) => {
             if (error) {
@@ -151,7 +151,7 @@ const deleteCluster = (id) => {
             return resolve(id);
         });
     });
-};
+});
 exports.default = {
     getAllClusters,
     getClusterById,

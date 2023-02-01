@@ -34,7 +34,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Nodemailer = __importStar(require("nodemailer"));
 // async..await is not allowed in global scope, must use a wrapper
-function sendEmail(email, url, message = "confirm your email address") {
+function sendEmail({ email, url, message = "verify your email address", buttonText = "Confirm Email" }) {
     return __awaiter(this, void 0, void 0, function* () {
         let transporter = Nodemailer.createTransport({
             name: "www.agronigeria.ng",
@@ -59,7 +59,7 @@ function sendEmail(email, url, message = "confirm your email address") {
             href="${url}"
             target="_blank"
             style="display: block; width: 250px; border-radius: 25px; border: 1px solid #1942D8; background: #1942D8; color: white; margin: 30px auto; text-align: center; padding: 15px 0px">
-            ConfirmEmail
+            ${buttonText}
             </a>
             <p style="line-height: 1.3rem;">
             Thanks <br />

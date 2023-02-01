@@ -1,7 +1,7 @@
 import pool from '../dbConnection';
 import { DocumentData } from '../interfaces';
 
-const getAllDocuments = () => {
+const getAllDocuments = async () => {
   return new Promise((resolve, reject)=>{
     pool.query('SELECT * FROM documents', (error: any, results: any) => {
       if (error) {
@@ -53,7 +53,7 @@ const getAllDocumentsByParams = async (whereString: string, paramsObject: object
 
 const documentExists = async (id: string) => {
   return new Promise((resolve, reject)=>{
-    pool.query(`select exists(SELECT * FROM documents WHERE document_id = $1`, [id], (error: any, results: any) => {
+    pool.query(`select exists(SELECT * FROM documents WHERE document_id = $1)`, [id], (error: any, results: any) => {
       if (error) {
         return reject(error.message)
       }
@@ -62,7 +62,7 @@ const documentExists = async (id: string) => {
   })
 }
 
-const createDocument = (documentData: DocumentData) => {
+const createDocument = async (documentData: DocumentData) => {
   const { cluster_id, collection_id, user_id, collection_name, data } = documentData;
   const date = Date.now().toString();
   
@@ -77,7 +77,7 @@ const createDocument = (documentData: DocumentData) => {
   
 }
 
-const updateDocument = (id: string, data: object) => {
+const updateDocument = async (id: string, data: object) => {
   const updated_at = Date.now().toString();
 
   return new Promise((resolve, reject)=>{
@@ -94,7 +94,7 @@ const updateDocument = (id: string, data: object) => {
   })
 }
 
-const deleteDocument = (id: string) => {
+const deleteDocument = async (id: string) => {
 
   return new Promise((resolve, reject)=>{
     pool.query('DELETE FROM documents WHERE document_id = $1', [id], (error: any, results: any) => {
