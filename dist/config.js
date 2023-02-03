@@ -22,7 +22,8 @@ const getConfig = () => {
         ENVIRONMENT: process.env.ENVIRONMENT,
         SECRET: process.env.SECRET,
         TEST_STRING: process.env.TEST_STRING,
-        API_BASE_URL: process.env.API_BASE_URL
+        API_BASE_URL: process.env.API_BASE_URL,
+        FRONTEND_URL: process.env.FRONTEND_URL
     };
 };
 // Throwing an Error if any field was undefined we don't 

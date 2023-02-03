@@ -13,7 +13,7 @@ import { updateOneDocument } from './controllers/serviceClientControllers/update
 import { deleteOneDocument } from './controllers/serviceClientControllers/deleteOneDocument';
 import { getAllUsers } from './controllers/serviceClientControllers/getAllUsers';
 import { getUserById } from './controllers/serviceClientControllers/getUserById';
-import { authenticateCluster, registerCluster ,confirmClusterEmail, resetClusterPassword, changeClusterPassword } from './controllers/adminControllers/authControllers';
+import { authenticateCluster, registerCluster ,confirmClusterEmail, resetClusterPassword, changeClusterPassword, resendClusterVerificationLink } from './controllers/adminControllers/authControllers';
 import { confirmUserEmail, changeUserPassword, resetUserPassword, registerUser, authenticateUser, resendVerificationLink } from './controllers/serviceClientControllers/authControllers';
 
 
@@ -36,6 +36,7 @@ app.get('/hello', (req, res)=>{
 app.post('/clusters/register', registerCluster);
 app.post('/clusters/login', authenticateCluster);
 app.get('/clusters/confirmEmail/:token', confirmClusterEmail);
+app.post('/clusters/resendVerificationLink/:email', resendClusterVerificationLink);
 app.post('/clusters/resetPassword/', resetClusterPassword); 
 app.post('/clusters/changePassword/:token', changeClusterPassword);
 

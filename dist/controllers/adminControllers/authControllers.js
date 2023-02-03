@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeClusterPassword = exports.resetClusterPassword = exports.resendVerificationLink = exports.confirmClusterEmail = exports.authenticateCluster = exports.registerCluster = void 0;
+exports.changeClusterPassword = exports.resetClusterPassword = exports.resendClusterVerificationLink = exports.confirmClusterEmail = exports.authenticateCluster = exports.registerCluster = void 0;
 const sendEmail_1 = __importDefault(require("../../services/sendEmail"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -51,7 +51,7 @@ const registerCluster = (request, response) => __awaiter(void 0, void 0, void 0,
                     token: token
                 });
             }
-            (0, sendEmail_1.default)({ email: cluster.email, url: `${config_1.default.API_BASE_URL}/clusters/confirmEmail/${token}` })
+            (0, sendEmail_1.default)({ email: cluster.email, url: `${config_1.default.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
                 .then(res => {
                 return response.status(200).json({
                     message: [res.message],
@@ -116,7 +116,7 @@ const confirmClusterEmail = (request, response) => __awaiter(void 0, void 0, voi
     }
 });
 exports.confirmClusterEmail = confirmClusterEmail;
-const resendVerificationLink = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+const resendClusterVerificationLink = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     let { email } = request.params;
     if (!validator_1.default.isEmail(email)) {
         return response.status(400).send({ message: "Email is not valid" });
@@ -133,7 +133,7 @@ const resendVerificationLink = (request, response) => __awaiter(void 0, void 0, 
         const token = jsonwebtoken_1.default.sign(unSignedData, config_1.default.SECRET, {
             expiresIn: "900000" //15mins
         });
-        (0, sendEmail_1.default)({ email, url: `${config_1.default.API_BASE_URL}/api/v1/users/confirmEmail/${token}` })
+        (0, sendEmail_1.default)({ email, url: `${config_1.default.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
             .then(res => {
             return response.status(201).json({
                 message: ['A verification link has been resent to your email. Link expires in 15mins'],
@@ -147,7 +147,7 @@ const resendVerificationLink = (request, response) => __awaiter(void 0, void 0, 
         return response.status(400).send({ message: error.message });
     }
 });
-exports.resendVerificationLink = resendVerificationLink;
+exports.resendClusterVerificationLink = resendClusterVerificationLink;
 const resetClusterPassword = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = request.body;
     try {
@@ -156,7 +156,7 @@ const resetClusterPassword = (request, response) => __awaiter(void 0, void 0, vo
             return response.status(400).send({ message: "Email does not exist" });
         }
         let token = jsonwebtoken_1.default.sign({ email }, config_1.default.SECRET, { expiresIn: "900000" });
-        (0, sendEmail_1.default)({ email, url: `${config_1.default.API_BASE_URL}/clusters/changePassword/${token}`, message: "reset your password", buttonText: "Reset Password" })
+        (0, sendEmail_1.default)({ email, url: `${config_1.default.FRONTEND_URL}/auth/changePassword?token=${token}`, message: "reset your password", buttonText: "Reset Password" })
             .then(res => {
             return response.status(200).json({
                 message: ['A reset link has been sent to your email. Link expires in 15mins'],

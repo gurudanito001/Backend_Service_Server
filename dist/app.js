@@ -33,6 +33,7 @@ app.get('/hello', (req, res) => {
 app.post('/clusters/register', authControllers_1.registerCluster);
 app.post('/clusters/login', authControllers_1.authenticateCluster);
 app.get('/clusters/confirmEmail/:token', authControllers_1.confirmClusterEmail);
+app.post('/clusters/resendVerificationLink/:email', authControllers_1.resendClusterVerificationLink);
 app.post('/clusters/resetPassword/', authControllers_1.resetClusterPassword);
 app.post('/clusters/changePassword/:token', authControllers_1.changeClusterPassword);
 app.get('/clusters', clusters_1.default.getClusters);

@@ -50,7 +50,7 @@ export const registerCluster = async (request: Request, response: Response) => {
         })
       }
       
-      sendEmail({email: cluster.email, url: `${config.API_BASE_URL}/clusters/confirmEmail/${token}` })
+      sendEmail({email: cluster.email, url: `${config.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
       .then(res =>{
         return response.status(200).json({
           message: [res.message],
@@ -113,7 +113,9 @@ export const confirmClusterEmail = async (request: Request, response: Response) 
   }
 }
 
-export const resendVerificationLink = async (request: Request, response: Response) => {
+
+
+export const resendClusterVerificationLink = async (request: Request, response: Response) => {
   let {email} = request.params;
   
   if(!validator.isEmail(email)){
@@ -133,7 +135,7 @@ export const resendVerificationLink = async (request: Request, response: Respons
     const token = jwt.sign(unSignedData, config.SECRET, {
       expiresIn: "900000" //15mins
     });
-    sendEmail({email, url: `${config.API_BASE_URL}/api/v1/users/confirmEmail/${token}`})
+    sendEmail({email, url: `${config.FRONTEND_URL}/auth/verifyEmail?token=${token}`})
       .then(res => {
         return response.status(201).json({
           message: ['A verification link has been resent to your email. Link expires in 15mins'],
@@ -156,7 +158,7 @@ export const resetClusterPassword = async (request: Request, response: Response)
       return response.status(400).send({message: "Email does not exist"})
     }
     let token = jwt.sign({email}, config.SECRET, {expiresIn: "900000"})
-    sendEmail({email, url: `${config.API_BASE_URL}/clusters/changePassword/${token}`, message: "reset your password", buttonText: "Reset Password"})
+    sendEmail({email, url: `${config.FRONTEND_URL}/auth/changePassword?token=${token}`, message: "reset your password", buttonText: "Reset Password"})
       .then(res =>{
         return response.status(200).json({
           message: ['A reset link has been sent to your email. Link expires in 15mins'],

@@ -28,7 +28,7 @@ export default async function sendEmail({ email, url, message = "verify your ema
         text: 'Follow the instructions below',
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center;">
-            <h1>Marlayer Web Services</h1>
+            <h1>Marlayer Cloud Services</h1>
             <p>Click on the button below to ${message}</p>
             <a
             href="${url}"
@@ -38,7 +38,7 @@ export default async function sendEmail({ email, url, message = "verify your ema
             </a>
             <p style="line-height: 1.3rem;">
             Thanks <br />
-            <em>The Marlayer Web Services Team</em>
+            <em>The Marlayer Cloud Services Team</em>
             </p>
         </div>
         `

@@ -21,6 +21,7 @@ interface ENV {
   SECRET: string | undefined;
   TEST_STRING: string | undefined;
   API_BASE_URL: string | undefined;
+  FRONTEND_URL: string | undefined;
 }
 
 interface Config {
@@ -37,6 +38,7 @@ interface Config {
   SECRET: string;
   TEST_STRING: string;
   API_BASE_URL: string;
+  FRONTEND_URL: string;
 }
 
 // Loading process.env as ENV interface
@@ -56,7 +58,8 @@ const getConfig = (): ENV => {
     ENVIRONMENT: process.env.ENVIRONMENT,
     SECRET: process.env.SECRET,
     TEST_STRING: process.env.TEST_STRING,
-    API_BASE_URL: process.env.API_BASE_URL
+    API_BASE_URL: process.env.API_BASE_URL,
+    FRONTEND_URL: process.env.FRONTEND_URL
   };
 };
 
