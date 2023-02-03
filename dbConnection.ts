@@ -3,10 +3,10 @@ const Pool = require('pg').Pool
 
 const pool = new Pool({
   user: config.DB_USER,
-  host: config.DB_LOCALHOST,
+  host: config.DB_HOST,
   database: config.DATABASE,
   password: config.PASSWORD,
-  port: config.DB_LOCAL_PORT
+  port: config.DB_PORT
 })
 
 export default pool;
