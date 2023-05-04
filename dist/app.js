@@ -25,8 +25,8 @@ app.use(body_parser_1.default.urlencoded({
     extended: true,
 }));
 app.use((0, cors_1.default)());
-app.get('/hello', (req, res) => {
-    res.send("hello");
+app.get('/', (req, res) => {
+    res.send("Marlayer Backend Service App");
 });
 // ADMIN ENDPOINTS 
 //app.post('/sendEmail', sendAnEmail);

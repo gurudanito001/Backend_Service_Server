@@ -27,8 +27,8 @@ app.use(
 )
 app.use(cors())
 
-app.get('/hello', (req, res)=>{
-  res.send("hello")
+app.get('/', (req, res)=>{
+  res.send("Marlayer Backend Service App")
 })
 
 // ADMIN ENDPOINTS 
