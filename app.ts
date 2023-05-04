@@ -25,7 +25,15 @@ app.use(
     extended: true,
   })
 )
-app.use(cors())
+/* app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "append,delete,entries,foreach,get,has,keys,set,values,Authorization");
+  next();
+}); */
+
+app.use(cors());
 
 app.get('/', (req, res)=>{
   res.send("Marlayer Backend Service App")
