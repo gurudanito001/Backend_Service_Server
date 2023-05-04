@@ -9,7 +9,6 @@ const users_1 = __importDefault(require("./controllers/adminControllers/users"))
 const collections_1 = __importDefault(require("./controllers/adminControllers/collections"));
 const documents_1 = __importDefault(require("./controllers/adminControllers/documents"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const cors_1 = __importDefault(require("cors"));
 const postDocument_1 = require("./controllers/serviceClientControllers/postDocument");
 const readOneDocument_1 = require("./controllers/serviceClientControllers/readOneDocument");
 const readAllDocuments_1 = require("./controllers/serviceClientControllers/readAllDocuments");
@@ -24,14 +23,13 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({
     extended: true,
 }));
-/* app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "append,delete,entries,foreach,get,has,keys,set,values,Authorization");
-  next();
-}); */
-app.use((0, cors_1.default)());
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Allow-Credentials', '*');
+    next();
+});
 app.get('/', (req, res) => {
     res.send("Marlayer Backend Service App");
 });
