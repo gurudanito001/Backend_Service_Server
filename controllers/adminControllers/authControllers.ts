@@ -49,16 +49,13 @@ export const registerCluster = async (request: Request, response: Response) => {
           token: token
         })
       }
-      
-      sendEmail({email: cluster.email, url: `${config.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
-      .then(res =>{
-        return response.status(200).json({
-          message: [res.message],
-          status: "success",
-          statusCode: 200,
-          payload: cluster
-        })
+      response.status(200).json({
+        message: [`check email:${cluster.email} for verification link`],
+        status: "success",
+        statusCode: 200,
+        payload: cluster
       })
+      sendEmail({email: cluster.email, url: `${config.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
     }
 
   } catch (error: any) {

@@ -51,15 +51,13 @@ const registerCluster = (request, response) => __awaiter(void 0, void 0, void 0,
                     token: token
                 });
             }
-            (0, sendEmail_1.default)({ email: cluster.email, url: `${config_1.default.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
-                .then(res => {
-                return response.status(200).json({
-                    message: [res.message],
-                    status: "success",
-                    statusCode: 200,
-                    payload: cluster
-                });
+            response.status(200).json({
+                message: [`check email:${cluster.email} for verification link`],
+                status: "success",
+                statusCode: 200,
+                payload: cluster
             });
+            (0, sendEmail_1.default)({ email: cluster.email, url: `${config_1.default.FRONTEND_URL}/auth/verifyEmail?token=${token}` });
         }
     }
     catch (error) {
