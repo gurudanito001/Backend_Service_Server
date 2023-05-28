@@ -5,12 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = __importDefault(require("./config"));
 const Pool = require('pg').Pool;
+/* const pool = new Pool({
+  user: config.LOCAL_DB_USER,
+  host: config.LOCAL_DB_HOST,
+  database: config.LOCAL_DATABASE,
+  password: config.LOCAL_PASSWORD,
+  port: config.LOCAL_DB_PORT
+}) */
 const pool = new Pool({
-    user: config_1.default.DB_USER,
-    host: config_1.default.DB_HOST,
-    database: config_1.default.DATABASE,
-    password: config_1.default.PASSWORD,
-    port: config_1.default.DB_PORT
+    connectionString: config_1.default.DATABASE_URL + "?sslmode=require",
 });
 exports.default = pool;
 //# sourceMappingURL=dbConnection.js.map

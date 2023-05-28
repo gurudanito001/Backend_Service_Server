@@ -1,12 +1,16 @@
 import config from './config'
 const Pool = require('pg').Pool
 
+/* const pool = new Pool({
+  user: config.LOCAL_DB_USER,
+  host: config.LOCAL_DB_HOST,
+  database: config.LOCAL_DATABASE,
+  password: config.LOCAL_PASSWORD,
+  port: config.LOCAL_DB_PORT
+}) */
+
 const pool = new Pool({
-  user: config.DB_USER,
-  host: config.DB_HOST,
-  database: config.DATABASE,
-  password: config.PASSWORD,
-  port: config.DB_PORT
+  connectionString: config.DATABASE_URL + "?sslmode=require",
 })
 
 export default pool;

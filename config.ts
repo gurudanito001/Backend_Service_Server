@@ -9,14 +9,21 @@ dotenv.config();
 
 interface ENV {
   SERVER_PORT: number | undefined;
+
+  LOCAL_DB_PORT: number | undefined;
+  LOCAL_DB_HOST: string | undefined;
+  LOCAL_DB_USER: string | undefined;
+  LOCAL_DATABASE: string | undefined;
+  LOCAL_PASSWORD: string | undefined;
+  LOCAL_DATABASE_URL: string | undefined;
+
   DB_PORT: number | undefined;
-  DB_LOCAL_PORT: number | undefined;
   DB_HOST: string | undefined;
-  DB_LOCALHOST: string | undefined;
   DB_USER: string | undefined;
   DATABASE: string | undefined;
   PASSWORD: string | undefined;
   DATABASE_URL: string | undefined;
+  
   ENVIRONMENT: string | undefined;
   SECRET: string | undefined;
   TEST_STRING: string | undefined;
@@ -26,14 +33,21 @@ interface ENV {
 
 interface Config {
   SERVER_PORT: number ;
-  DB_PORT: number ;
-  DB_LOCAL_PORT: number ;
-  DB_HOST: string ;
-  DB_LOCALHOST: string ;
-  DB_USER: string ;
-  DATABASE: string ;
-  PASSWORD: string ;
-  DATABASE_URL: string ;
+  
+  LOCAL_DB_PORT: number;
+  LOCAL_DB_HOST: string;
+  LOCAL_DB_USER: string;
+  LOCAL_DATABASE: string;
+  LOCAL_PASSWORD: string;
+  LOCAL_DATABASE_URL: string;
+
+  DB_PORT: number;
+  DB_HOST: string;
+  DB_USER: string;
+  DATABASE: string;
+  PASSWORD: string;
+  DATABASE_URL: string;
+  
   ENVIRONMENT: string ;
   SECRET: string;
   TEST_STRING: string;
@@ -44,17 +58,23 @@ interface Config {
 // Loading process.env as ENV interface
 
 const getConfig = (): ENV => {
-  console.log(process.env.DB_USER)
   return {
-    SERVER_PORT: Number(process.env.PORT),
+    SERVER_PORT: Number(process.env.SERVER_PORT),
+
+    LOCAL_DB_PORT: Number(process.env.LOCAL_DB_PORT),
+    LOCAL_DB_HOST: process.env.LOCAL_DB_HOST,
+    LOCAL_DB_USER: process.env.LOCAL_DB_USER,
+    LOCAL_DATABASE: process.env.LOCAL_DATABASE,
+    LOCAL_PASSWORD: process.env.LOCAL_PASSWORD,
+    LOCAL_DATABASE_URL: process.env.LOCAL_DATABASE_URL,
+
     DB_PORT: Number(process.env.DB_PORT),
-    DB_LOCAL_PORT: Number(process.env.DB_LOCAL_PORT),
-    DB_HOST: process.env.DB_HOST ,
-    DB_LOCALHOST: process.env.DB_LOCALHOST ,
+    DB_HOST: process.env.DB_HOST,
     DB_USER: process.env.DB_USER,
     DATABASE: process.env.DATABASE,
     PASSWORD: process.env.PASSWORD,
     DATABASE_URL: process.env.DATABASE_URL,
+    
     ENVIRONMENT: process.env.ENVIRONMENT,
     SECRET: process.env.SECRET,
     TEST_STRING: process.env.TEST_STRING,

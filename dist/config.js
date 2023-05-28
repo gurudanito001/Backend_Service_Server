@@ -8,13 +8,16 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 // Loading process.env as ENV interface
 const getConfig = () => {
-    console.log(process.env.DB_USER);
     return {
-        SERVER_PORT: Number(process.env.PORT),
+        SERVER_PORT: Number(process.env.SERVER_PORT),
+        LOCAL_DB_PORT: Number(process.env.LOCAL_DB_PORT),
+        LOCAL_DB_HOST: process.env.LOCAL_DB_HOST,
+        LOCAL_DB_USER: process.env.LOCAL_DB_USER,
+        LOCAL_DATABASE: process.env.LOCAL_DATABASE,
+        LOCAL_PASSWORD: process.env.LOCAL_PASSWORD,
+        LOCAL_DATABASE_URL: process.env.LOCAL_DATABASE_URL,
         DB_PORT: Number(process.env.DB_PORT),
-        DB_LOCAL_PORT: Number(process.env.DB_LOCAL_PORT),
         DB_HOST: process.env.DB_HOST,
-        DB_LOCALHOST: process.env.DB_LOCALHOST,
         DB_USER: process.env.DB_USER,
         DATABASE: process.env.DATABASE,
         PASSWORD: process.env.PASSWORD,
