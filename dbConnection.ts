@@ -1,6 +1,14 @@
 import config from './config'
 const Pool = require('pg').Pool
 
+let enviroment = config.ENVIRONMENT
+let dbUrl: string ;
+if(enviroment === "prod"){
+  dbUrl = config.DATABASE_URL
+}else{
+  dbUrl = config.LOCAL_DATABASE_URL
+}
+
 /* const pool = new Pool({
   user: config.LOCAL_DB_USER,
   host: config.LOCAL_DB_HOST,
@@ -10,7 +18,7 @@ const Pool = require('pg').Pool
 }) */
 
 const pool = new Pool({
-  connectionString: config.LOCAL_DATABASE_URL + "?sslmode=require",
+  connectionString: dbUrl + "?sslmode=require",
 })
 
 export default pool;
