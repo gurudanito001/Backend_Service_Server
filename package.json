@@ -12,7 +12,7 @@
   "scripts": {
     "test": "mocha -r ts-node/register tests/**/*.spec.ts",
     "start": "nodemon dist/server.js",
-    "dev": "concurrently  \"npx tsc --watch\"  \"nodemon -q dist/server.js\"",
+    "dev": "npm run build && npm run start",
     "watch-ts": "tsc -w",
     "watch-node": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\"",

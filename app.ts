@@ -54,15 +54,15 @@ app.post('/clusters/freeze/:id', clusters.deActivateCluster);
 app.post('/clusters/unfreeze/:id', clusters.reActivateCluster);
 app.delete('/clusters/:id', clusters.deleteCluster);
 
+app.post('/collections/create', collections.createCollection)
 app.get('/collections', collections.getCollections)
 app.get('/collections/:id', collections.getCollectionById)
-app.post('/collections/create', collections.createCollection)
 app.put('/collections/:id', collections.updateCollection)
 app.delete('/collections/:id', collections.deleteCollection)
 
+app.post('/users/create', users.createUser)
 app.get('/users', users.getUsers)
 app.get('/users/:id', users.getUserById)
-app.post('/users/create', users.createUser)
 app.put('/users/:id', users.updateUser)
 app.delete('/users/:id', users.deleteUser)
 

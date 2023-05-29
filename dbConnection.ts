@@ -10,7 +10,7 @@ const Pool = require('pg').Pool
 }) */
 
 const pool = new Pool({
-  connectionString: config.DATABASE_URL + "?sslmode=require",
+  connectionString: config.LOCAL_DATABASE_URL + "?sslmode=require",
 })
 
 export default pool;

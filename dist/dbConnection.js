@@ -13,7 +13,7 @@ const Pool = require('pg').Pool;
   port: config.LOCAL_DB_PORT
 }) */
 const pool = new Pool({
-    connectionString: config_1.default.DATABASE_URL + "?sslmode=require",
+    connectionString: config_1.default.LOCAL_DATABASE_URL + "?sslmode=require",
 });
 exports.default = pool;
 //# sourceMappingURL=dbConnection.js.map

@@ -6,6 +6,7 @@ import config from '../../config';
 import ClusterDbServices from '../../dbServices/clusters';
 import { ClusterData } from '../../interfaces';
 import validator from "validator";
+import { error } from "console";
 
 
 
@@ -50,16 +51,20 @@ export const registerCluster = async (request: Request, response: Response) => {
         })
       }
       sendEmail({email: cluster.email, url: `${config.FRONTEND_URL}/auth/verifyEmail?token=${token}` })
-      response.status(200).json({
-        message: [`check email:${cluster.email} for verification link`],
-        status: "success",
-        statusCode: 200,
-        payload: cluster
+      .then( res =>{
+        return response.status(200).json({
+          message: [`check email:${cluster.email} for verification link`],
+          status: "success",
+          statusCode: 200,
+          payload: cluster
+        })
+      }).catch( error =>{
+        return response.status(401).json({message: error})
       })
     }
 
   } catch (error: any) {
-    return response.status(400).json({message: error.message})
+    return response.status(400).json({message: error})
   }
 }
 

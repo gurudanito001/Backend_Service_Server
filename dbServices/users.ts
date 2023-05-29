@@ -205,6 +205,7 @@ export default {
   updateUser,
   verifyEmail,
   deleteUser,
+  
   createUserDataStructure,
   structureExists,
   getStructureByClusterId,
