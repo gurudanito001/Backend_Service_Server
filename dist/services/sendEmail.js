@@ -34,26 +34,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Nodemailer = __importStar(require("nodemailer"));
 // async..await is not allowed in global scope, must use a wrapper
-function sendEmail({ email, url, message = "verify your email address", buttonText = "Confirm Email" }) {
+function sendEmail({ email, url, message = "verify your email address", buttonText = "Confirm Email", subject = "Account Verification", companyName = "Marlayer Cloud Services" }) {
     return __awaiter(this, void 0, void 0, function* () {
         let transporter = Nodemailer.createTransport({
-            name: "www.agronigeria.ng",
-            host: "mail.agronigeria.ng",
+            name: "www.marlayer.cloud",
+            host: "smtppro.zoho.com",
             port: 465,
             secure: true,
             auth: {
-                user: "no-reply@agronigeria.ng",
-                pass: "AgroNigA!!en90",
+                user: "account_verification@marlayer.cloud",
+                pass: "6eq%tUzv", //AgroNigA!!en90
             },
         });
         let mailDetails = {
-            from: 'no-reply@agronigeria.ng',
+            from: 'account_verification@marlayer.cloud',
             to: `${email}`,
-            subject: 'Account Verification Link',
+            subject: `${subject} Link`,
             text: 'Follow the instructions below',
             html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center;">
-            <h1>Marlayer Cloud Services</h1>
+            <h1>${companyName}</h1>
             <p>Click on the button below to ${message}</p>
             <a
             href="${url}"

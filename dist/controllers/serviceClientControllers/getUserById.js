@@ -15,10 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserById = void 0;
 const users_1 = __importDefault(require("../../dbServices/users"));
 const getUserById = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId } = request.params;
+    const { apiKey, userId } = request.params;
     try {
         let user = yield users_1.default.getUserById(userId);
         if (user) {
+            if (user.cluster_id !== apiKey) {
+                return response.status(400).json({ message: "User does not belong in cluster" });
+            }
             return response.status(200).json({
                 message: [`User fetched SuccessFully`],
                 status: "success",

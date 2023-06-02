@@ -68,19 +68,19 @@ app.put('/documents/:id', documents_1.default.updateDocument);
 app.delete('/documents/:id', documents_1.default.deleteDocument);
 //SERVICE USER ENDPOINTS
 //auth endpoints
-app.post('/api/v1/users/register', authControllers_2.registerUser);
-app.post('/api/v1/users/login', authControllers_2.authenticateUser);
-app.get('/api/v1/users/confirmEmail/:token', authControllers_2.confirmUserEmail);
-app.post('/api/v1/users/resendVerificationLink/:email', authControllers_2.resendVerificationLink);
-app.post('/api/v1/users/resetPassword', authControllers_2.resetUserPassword);
-app.post('/api/v1/users/changePassword/:token', authControllers_2.changeUserPassword);
+app.post('/api/v1/:apiKey/users/register', authControllers_2.registerUser);
+app.post('/api/v1/:apiKey/users/login', authControllers_2.authenticateUser);
+app.get('/api/v1/:apiKey/users/confirmEmail/:token', authControllers_2.confirmUserEmail);
+app.post('/api/v1/:apiKey/users/resendVerificationLink/:email', authControllers_2.resendVerificationLink);
+app.post('/api/v1/:apiKey/users/resetPassword', authControllers_2.resetUserPassword);
+app.post('/api/v1/:apiKey/users/changePassword/:token', authControllers_2.changeUserPassword);
 // crud endpoints users
 // get all users
 app.get('/api/v1/:apiKey/users', getAllUsers_1.getAllUsers);
 // get one user
-app.get('/api/v1/users/:userId', getUserById_1.getUserById);
+app.get('/api/v1/:apiKey/users/:userId', getUserById_1.getUserById);
 // update one user 
-app.post('/api/v1/users/:userId', getUserById_1.getUserById);
+app.post('/api/v1/:apiKey/users/:userId', getUserById_1.getUserById);
 // delete one user
 // crud endpoints documents
 app.post('/api/v1/:apiKey/:collectionName', postDocument_1.postDocument);

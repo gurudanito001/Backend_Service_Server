@@ -9,6 +9,8 @@ export interface ClusterData {
   multi_tenant: boolean,
   isactive?: boolean,
   email_confirmed?: boolean,
+  verify_email_url?: string,
+  reset_password_url?: string,
   is_admin?: boolean,
   created_at?: string,
   updated_at?: string
@@ -39,7 +41,7 @@ interface UserObject {
 export interface UserData {
   user_id?: string,
   cluster_id: string,
-  data: UserObject
+  data: UserObject,
   created_at?: string,
   updated_at?: string,
   email_confirmed?: boolean,

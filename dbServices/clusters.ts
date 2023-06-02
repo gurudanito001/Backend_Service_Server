@@ -88,13 +88,13 @@ const createCluster = async (clusterData: ClusterData) => {
 }
 
 const updateCluster = async (id: string, updateClusterData: ClusterData) => {
-  const { name, email, password, description, multi_tenant } = updateClusterData;
+  const { name, email, password, description, multi_tenant, verify_email_url, reset_password_url } = updateClusterData;
   const updated_at = Date.now().toString();
 
   return new Promise((resolve, reject)=>{
     pool.query(
-      'UPDATE clusters SET name = $1, email = $2, password = $3, description = $4, multi_tenant = $5, updated_at = $6 WHERE cluster_id = $7 RETURNING *',
-      [name, email, password, description, multi_tenant, updated_at, id],
+      'UPDATE clusters SET name = $1, email = $2, password = $3, description = $4, multi_tenant = $5, verify_email_url = $6, reset_password_url = $7, updated_at = $8 WHERE cluster_id = $9 RETURNING *',
+      [name, email, password, description, multi_tenant, verify_email_url, reset_password_url, updated_at, id],
       (error: any, results: any) => {
         if (error) {
           return reject(error.message)

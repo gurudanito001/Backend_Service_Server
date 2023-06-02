@@ -6,29 +6,31 @@ interface SendEmailParams {
     url: string,
     message?: string,
     buttonText?: string
+    subject?: string
+    companyName?: string
 }
 // async..await is not allowed in global scope, must use a wrapper
-export default async function sendEmail({ email, url, message = "verify your email address", buttonText = "Confirm Email"  }: SendEmailParams ) : Promise<any> {
+export default async function sendEmail({ email, url, message = "verify your email address", buttonText = "Confirm Email", subject = "Account Verification", companyName = "Marlayer Cloud Services"  }: SendEmailParams ) : Promise<any> {
 
     let transporter = Nodemailer.createTransport({
-        name: "www.agronigeria.ng",
-        host: "mail.agronigeria.ng",
+        name: "www.marlayer.cloud",  //www.agronigeria.ng
+        host: "smtppro.zoho.com",  //mail.agronigeria.ng
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "no-reply@agronigeria.ng", 
-            pass: "AgroNigA!!en90", 
+            user: "account_verification@marlayer.cloud", //no-reply@agronigeria.ng
+            pass: "6eq%tUzv", //AgroNigA!!en90
         },
     });
 
     let mailDetails = {
-        from: 'no-reply@agronigeria.ng',
+        from: 'account_verification@marlayer.cloud',
         to: `${email}`,
-        subject: 'Account Verification Link',
+        subject: `${subject} Link`,
         text: 'Follow the instructions below',
         html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center;">
-            <h1>Marlayer Cloud Services</h1>
+            <h1>${companyName}</h1>
             <p>Click on the button below to ${message}</p>
             <a
             href="${url}"

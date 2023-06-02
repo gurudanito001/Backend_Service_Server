@@ -52,9 +52,10 @@ const getClusterById = (request, response) => __awaiter(void 0, void 0, void 0, 
 });
 const updateCluster = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const id = request.params.id;
-    const { name, email, password, description, multi_tenant } = request.body;
+    const newData = request.body;
     try {
-        let cluster = yield clusters_1.default.updateCluster(id, { name, email, password, description, multi_tenant });
+        let clusterData = yield clusters_1.default.getClusterById(id);
+        let cluster = yield clusters_1.default.updateCluster(id, Object.assign(Object.assign({}, clusterData), newData));
         if (cluster) {
             return response.status(200).json({
                 message: ["Cluster Updated Successfully"],
@@ -65,7 +66,7 @@ const updateCluster = (request, response) => __awaiter(void 0, void 0, void 0, f
         }
     }
     catch (error) {
-        return response.status(400).json({ message: error.message });
+        return response.status(400).json({ message: error });
     }
 });
 const deActivateCluster = (request, response) => __awaiter(void 0, void 0, void 0, function* () {

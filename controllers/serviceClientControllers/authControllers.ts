@@ -16,10 +16,10 @@ interface TokenData{
 }
 
 export const registerUser = async (request: Request, response: Response) => {
-  const data = request.body.data;
-  const apikey = request.body.cluster_id as string; //apikey will be derived from the appToken in the future
+  const data = request.body;
+  const {apiKey} = request.params ; //apikey will be derived from the appToken in the future
 
-  if(!apikey){
+  if(!apiKey){
     return response.status(400).send({message: "apiKey is required"})
   }
 
@@ -40,18 +40,19 @@ export const registerUser = async (request: Request, response: Response) => {
     if(emailExists){
       return response.status(400).send({message: "Email already Exists"})
     }
-    let structure = await UserDbServices.getStructureByClusterId(apikey) as StructureData;
+    let structure = await UserDbServices.getStructureByClusterId(apiKey) as StructureData;
     if(structure){
       let isCorrectStructure = doesDataMatchStructure(data, structure.structure);
       if(!isCorrectStructure){
-        return response.status(400).send({message: "Data shape does not match Users"})
+        return response.status(400).send({message: "Data shape does not match User Structure"})
       }
     }else{
-      structure = await UserDbServices.createUserDataStructure(apikey, data) as StructureData;
+      structure = await UserDbServices.createUserDataStructure(apiKey, data) as StructureData;
     }
     let hashedPassword = await bcrypt.hash(data.password, 7);
     let newData = {...data, password: hashedPassword}
-    let user = await UserDbServices.createUser({ cluster_id: apikey, data: newData }) as UserData
+    let user = await UserDbServices.createUser({ cluster_id: apiKey, data: newData }) as UserData
+    let {verify_email_url} = await ClusterDbServices.getClusterById(apiKey) as ClusterData
 
     if(user){
       if(data.test_string === config.TEST_STRING.toString()){
@@ -66,7 +67,7 @@ export const registerUser = async (request: Request, response: Response) => {
       const token = jwt.sign(unSignedData, config.SECRET, {
         expiresIn: "900000" //15mins
       });
-      sendEmail({email: data.email, url: `${config.API_BASE_URL}/api/v1/users/confirmEmail/${token}`})
+      sendEmail({email: data.email, url: `${verify_email_url}?token=${token}`})
       .then(res =>{
         return response.status(201).json({
           message: ['A verification link has been sent to your email. Link expires in 15mins'],
@@ -132,7 +133,7 @@ export const confirmUserEmail = async (request: Request, response: Response) =>{
 }
 
 export const resendVerificationLink = async (request: Request, response: Response) => {
-  let {email} = request.params;
+  let {email, apiKey} = request.params;
   
   if(!validator.isEmail(email)){
     return response.status(400).send({message: "Email is not valid"})
@@ -151,7 +152,8 @@ export const resendVerificationLink = async (request: Request, response: Respons
     const token = jwt.sign(unSignedData, config.SECRET, {
       expiresIn: "900000" //15mins
     });
-    sendEmail({email, url: `${config.API_BASE_URL}/api/v1/users/confirmEmail/${token}`})
+    const {verify_email_url} = await ClusterDbServices.getClusterById(apiKey) as ClusterData
+    sendEmail({email, url: `${verify_email_url}?token=${token}`})
       .then(res => {
         return response.status(201).json({
           message: ['A verification link has been resent to your email. Link expires in 15mins'],
@@ -168,14 +170,16 @@ export const resendVerificationLink = async (request: Request, response: Respons
 
 export const resetUserPassword = async (request: Request, response: Response) =>{
   const {email} = request.body;
+  let {apiKey} = request.params;
   
   try {
     let user = await UserDbServices.getUserByJsonbData("email", email) as UserData;
+    let {reset_password_url} = await ClusterDbServices.getClusterById(apiKey) as ClusterData
     if(!user){
       return response.status(400).send({message: "Email does not exist"})
     }
     let token = jwt.sign({email: email, user_id: user.user_id}, config.SECRET, {expiresIn: "900000"})
-    sendEmail({email, url: `${config.API_BASE_URL}/users/changePassword/${token}`, message: "reset your password", buttonText: "Reset Password"})
+    sendEmail({email, url: `${reset_password_url}?token=${token}`, message: "reset your password", buttonText: "Reset Password"})
       .then(res =>{
         return response.status(200).json({
           message: ['A reset password link has been sent to your email. Link expires in 15mins'],

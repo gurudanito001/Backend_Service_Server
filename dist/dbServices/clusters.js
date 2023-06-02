@@ -87,10 +87,10 @@ const createCluster = (clusterData) => __awaiter(void 0, void 0, void 0, functio
     });
 });
 const updateCluster = (id, updateClusterData) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password, description, multi_tenant } = updateClusterData;
+    const { name, email, password, description, multi_tenant, verify_email_url, reset_password_url } = updateClusterData;
     const updated_at = Date.now().toString();
     return new Promise((resolve, reject) => {
-        dbConnection_1.default.query('UPDATE clusters SET name = $1, email = $2, password = $3, description = $4, multi_tenant = $5, updated_at = $6 WHERE cluster_id = $7 RETURNING *', [name, email, password, description, multi_tenant, updated_at, id], (error, results) => {
+        dbConnection_1.default.query('UPDATE clusters SET name = $1, email = $2, password = $3, description = $4, multi_tenant = $5, verify_email_url = $6, reset_password_url = $7, updated_at = $8 WHERE cluster_id = $9 RETURNING *', [name, email, password, description, multi_tenant, verify_email_url, reset_password_url, updated_at, id], (error, results) => {
             if (error) {
                 return reject(error.message);
             }

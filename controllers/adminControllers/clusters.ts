@@ -1,5 +1,6 @@
 import { Request, Response} from 'express';
 import ClusterDbServices from '../../dbServices/clusters';
+import { ClusterData } from 'interfaces';
 /* import bcrypt from 'bcrypt';
 import config from '../../config';
 import  Jwt  from 'jsonwebtoken';
@@ -42,10 +43,11 @@ const getClusterById = async (request: Request, response: Response) => {
 
 const updateCluster = async (request: Request, response: Response) => {
   const id = request.params.id
-  const { name, email, password, description, multi_tenant } = request.body;
+  const newData = request.body;
 
   try {
-    let cluster = await ClusterDbServices.updateCluster(id, {name, email, password, description, multi_tenant})
+    let clusterData = await ClusterDbServices.getClusterById(id) as ClusterData;
+    let cluster = await ClusterDbServices.updateCluster(id, {...clusterData, ...newData})
     if(cluster){
       return response.status(200).json({
         message: ["Cluster Updated Successfully"],
@@ -55,7 +57,7 @@ const updateCluster = async (request: Request, response: Response) => {
       })
     }
   } catch (error: any) {
-    return response.status(400).json({message: error.message})
+    return response.status(400).json({message: error})
   }
 }
 

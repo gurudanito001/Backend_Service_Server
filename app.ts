@@ -81,22 +81,21 @@ app.delete('/documents/:id', documents.deleteDocument)
 //SERVICE USER ENDPOINTS
 
 //auth endpoints
-app.post('/api/v1/users/register', registerUser);
-app.post('/api/v1/users/login', authenticateUser);
-app.get('/api/v1/users/confirmEmail/:token', confirmUserEmail);
-app.post('/api/v1/users/resendVerificationLink/:email', resendVerificationLink);
-app.post('/api/v1/users/resetPassword', resetUserPassword);
-app.post('/api/v1/users/changePassword/:token', changeUserPassword);
+app.post('/api/v1/:apiKey/users/register', registerUser);
+app.post('/api/v1/:apiKey/users/login', authenticateUser);
+app.get('/api/v1/:apiKey/users/confirmEmail/:token', confirmUserEmail);
+app.post('/api/v1/:apiKey/users/resendVerificationLink/:email', resendVerificationLink);
+app.post('/api/v1/:apiKey/users/resetPassword', resetUserPassword);
+app.post('/api/v1/:apiKey/users/changePassword/:token', changeUserPassword);
 
 // crud endpoints users
 // get all users
 app.get('/api/v1/:apiKey/users', getAllUsers);
 // get one user
-app.get('/api/v1/users/:userId', getUserById);
+app.get('/api/v1/:apiKey/users/:userId', getUserById);
 // update one user 
-app.post('/api/v1/users/:userId', getUserById);
+app.post('/api/v1/:apiKey/users/:userId', getUserById);
 // delete one user
-
 
 
 

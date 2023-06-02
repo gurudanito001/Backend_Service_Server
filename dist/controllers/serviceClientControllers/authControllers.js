@@ -22,9 +22,9 @@ const clusters_1 = __importDefault(require("../../dbServices/clusters"));
 const validator_1 = __importDefault(require("validator"));
 const doesDataMatchStructure_1 = require("../../services/doesDataMatchStructure");
 const registerUser = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = request.body.data;
-    const apikey = request.body.cluster_id; //apikey will be derived from the appToken in the future
-    if (!apikey) {
+    const data = request.body;
+    const { apiKey } = request.params; //apikey will be derived from the appToken in the future
+    if (!apiKey) {
         return response.status(400).send({ message: "apiKey is required" });
     }
     let keys = Object.keys(data);
@@ -42,19 +42,20 @@ const registerUser = (request, response) => __awaiter(void 0, void 0, void 0, fu
         if (emailExists) {
             return response.status(400).send({ message: "Email already Exists" });
         }
-        let structure = yield users_1.default.getStructureByClusterId(apikey);
+        let structure = yield users_1.default.getStructureByClusterId(apiKey);
         if (structure) {
             let isCorrectStructure = (0, doesDataMatchStructure_1.doesDataMatchStructure)(data, structure.structure);
             if (!isCorrectStructure) {
-                return response.status(400).send({ message: "Data shape does not match Users" });
+                return response.status(400).send({ message: "Data shape does not match User Structure" });
             }
         }
         else {
-            structure = (yield users_1.default.createUserDataStructure(apikey, data));
+            structure = (yield users_1.default.createUserDataStructure(apiKey, data));
         }
         let hashedPassword = yield bcrypt_1.default.hash(data.password, 7);
         let newData = Object.assign(Object.assign({}, data), { password: hashedPassword });
-        let user = yield users_1.default.createUser({ cluster_id: apikey, data: newData });
+        let user = yield users_1.default.createUser({ cluster_id: apiKey, data: newData });
+        let { verify_email_url } = yield clusters_1.default.getClusterById(apiKey);
         if (user) {
             if (data.test_string === config_1.default.TEST_STRING.toString()) {
                 return response.status(201).json({
@@ -68,7 +69,7 @@ const registerUser = (request, response) => __awaiter(void 0, void 0, void 0, fu
             const token = jsonwebtoken_1.default.sign(unSignedData, config_1.default.SECRET, {
                 expiresIn: "900000" //15mins
             });
-            (0, sendEmail_1.default)({ email: data.email, url: `${config_1.default.API_BASE_URL}/api/v1/users/confirmEmail/${token}` })
+            (0, sendEmail_1.default)({ email: data.email, url: `${verify_email_url}?token=${token}` })
                 .then(res => {
                 return response.status(201).json({
                     message: ['A verification link has been sent to your email. Link expires in 15mins'],
@@ -134,7 +135,7 @@ const confirmUserEmail = (request, response) => __awaiter(void 0, void 0, void 0
 });
 exports.confirmUserEmail = confirmUserEmail;
 const resendVerificationLink = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    let { email } = request.params;
+    let { email, apiKey } = request.params;
     if (!validator_1.default.isEmail(email)) {
         return response.status(400).send({ message: "Email is not valid" });
     }
@@ -150,7 +151,8 @@ const resendVerificationLink = (request, response) => __awaiter(void 0, void 0, 
         const token = jsonwebtoken_1.default.sign(unSignedData, config_1.default.SECRET, {
             expiresIn: "900000" //15mins
         });
-        (0, sendEmail_1.default)({ email, url: `${config_1.default.API_BASE_URL}/api/v1/users/confirmEmail/${token}` })
+        const { verify_email_url } = yield clusters_1.default.getClusterById(apiKey);
+        (0, sendEmail_1.default)({ email, url: `${verify_email_url}?token=${token}` })
             .then(res => {
             return response.status(201).json({
                 message: ['A verification link has been resent to your email. Link expires in 15mins'],
@@ -167,13 +169,15 @@ const resendVerificationLink = (request, response) => __awaiter(void 0, void 0, 
 exports.resendVerificationLink = resendVerificationLink;
 const resetUserPassword = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = request.body;
+    let { apiKey } = request.params;
     try {
         let user = yield users_1.default.getUserByJsonbData("email", email);
+        let { reset_password_url } = yield clusters_1.default.getClusterById(apiKey);
         if (!user) {
             return response.status(400).send({ message: "Email does not exist" });
         }
         let token = jsonwebtoken_1.default.sign({ email: email, user_id: user.user_id }, config_1.default.SECRET, { expiresIn: "900000" });
-        (0, sendEmail_1.default)({ email, url: `${config_1.default.API_BASE_URL}/users/changePassword/${token}`, message: "reset your password", buttonText: "Reset Password" })
+        (0, sendEmail_1.default)({ email, url: `${reset_password_url}?token=${token}`, message: "reset your password", buttonText: "Reset Password" })
             .then(res => {
             return response.status(200).json({
                 message: ['A reset password link has been sent to your email. Link expires in 15mins'],
